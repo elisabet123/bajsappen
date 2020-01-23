@@ -1,7 +1,7 @@
+import 'package:bajsappen/statistics/statisticspage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ididitpage.dart';
-import 'package:flutter_app/poopbutton.dart';
-import 'package:flutter_app/statistics/statisticspage.dart';
+
+import 'ididitpage.dart';
 
 void main() => runApp(Bajsappen());
 

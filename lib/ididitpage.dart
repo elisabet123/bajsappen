@@ -1,5 +1,5 @@
+import 'package:bajsappen/poopbutton.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/poopbutton.dart';
 
 class IDidItPage extends StatefulWidget {
   IDidItPage({Key key, this.lastPoop, this.onPressed}) : super(key: key);

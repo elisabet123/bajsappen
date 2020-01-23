@@ -1,5 +1,5 @@
+import 'package:bajsappen/statistics/weekday.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/statistics/weekday.dart';
 
 class StatisticPage extends StatefulWidget {
   StatisticPage({Key key, this.poops}) : super(key: key);
