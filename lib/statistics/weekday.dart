@@ -99,7 +99,7 @@ class WeekdayStatsState extends State<WeekdayStats> {
         builder: (BuildContext context) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Weekday breakdown'),
+              title: Text('Veckodagsstatistik'),
             ),
             body: chart,
           );
