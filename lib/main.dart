@@ -1,6 +1,7 @@
 import 'package:bajsappen/statistics/statisticspage.dart';
 import 'package:flutter/material.dart';
 
+import 'database_helpers.dart';
 import 'ididitpage.dart';
 
 void main() => runApp(Bajsappen());
@@ -27,18 +28,47 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   Widget activeTab;
-  List<DateTime>_poops = [];
+  List<DateTime> _poops = [];
 
-  void _pooped(DateTime latestPoop) {
+  @override
+  void initState() {
+    super.initState();
+
+    _read().then((_) {
+      activeTab = IDidItPage(
+        lastPoop: _poops.isNotEmpty ? _poops.last : null,
+        onPressed: _pooped,
+      );
+    });
+  }
+
+  _read() async {
+    DatabaseHelper helper = DatabaseHelper.instance;
+    var poops = await helper.getAllPoops();
+    if (poops != null) {
+      setState(() {
+        _poops = poops;
+      });
+    }
+  }
+
+  _savePoop(DateTime poop) async {
+    DatabaseHelper helper = DatabaseHelper.instance;
+    await helper.insert(poop);
+  }
+
+  void _pooped(DateTime latestPoop) async {
+    await _savePoop(latestPoop);
+
     setState(() {
       this._poops.add(latestPoop);
     });
   }
 
-  void _onItemTapped(int index) {
+  void _onNavItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      switch(_selectedIndex) {
+      switch (_selectedIndex) {
         case 1:
           activeTab = StatisticPage(
             poops: _poops,
@@ -56,13 +86,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (activeTab == null) {
-      _selectedIndex = 0;
-      activeTab = IDidItPage(
-        lastPoop: _poops.isNotEmpty ? _poops.last : null,
-        onPressed: _pooped,
-      );
-    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bajsappen'),
@@ -81,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
+        onTap: _onNavItemTapped,
       ),
     );
   }
