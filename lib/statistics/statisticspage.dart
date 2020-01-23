@@ -1,3 +1,4 @@
+import 'package:bajsappen/statistics/count.dart';
 import 'package:bajsappen/statistics/weekday.dart';
 import 'package:flutter/material.dart';
 
@@ -12,9 +13,15 @@ class StatisticPage extends StatefulWidget {
 class _StatisticPageState extends State<StatisticPage> {
   final List<DateTime> _poops;
   final List<Widget> statisticsWidgets = [];
+  final TextStyle highlightStyle = TextStyle(
+    color: Colors.deepOrange,
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+  );
 
   _StatisticPageState(this._poops) {
-    statisticsWidgets.add(WeekdayStats(poops: _poops));
+    statisticsWidgets.add(CounterWidget(poops: _poops, highlightStyle: highlightStyle));
+    statisticsWidgets.add(WeekdayStats(poops: _poops, highlightStyle: highlightStyle));
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:bajsappen/statistics/statisticscard.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 class WeekdayStats extends StatefulWidget {
   final Map<int, int> poopsByWeekday;
   final String mostPopularDay;
+  final TextStyle highlightStyle;
   static final List<String> weekdayNames = [
     'Måndag',
     'Tisdag',
@@ -15,14 +17,14 @@ class WeekdayStats extends StatefulWidget {
     'Söndag'
   ];
 
-  WeekdayStats({Key key, List<DateTime> poops})
+  WeekdayStats({Key key, List<DateTime> poops, this.highlightStyle})
       : this.poopsByWeekday = groupByDay(poops),
         this.mostPopularDay = getMostPopularDay(groupByDay(poops)),
         super(key: key);
 
   @override
-  WeekdayStatsState createState() =>
-      WeekdayStatsState(poopsByWeekday, mostPopularDay, weekdayNames);
+  WeekdayStatsState createState() => WeekdayStatsState(
+      poopsByWeekday, mostPopularDay, weekdayNames, highlightStyle);
 
   static Map<int, int> groupByDay(List<DateTime> poops) {
     Map<int, List<DateTime>> days =
@@ -52,16 +54,17 @@ class WeekdayStatsState extends State<WeekdayStats> {
   final Map<int, int> poopsByWeekday;
   final String mostPopularDay;
   final List<String> weekdayNames;
+  final TextStyle highlightStyle;
 
-  WeekdayStatsState(
-      this.poopsByWeekday, this.mostPopularDay, this.weekdayNames);
+  WeekdayStatsState(this.poopsByWeekday, this.mostPopularDay, this.weekdayNames,
+      this.highlightStyle);
 
   void _showDetails() {
     List<WeekdaySeries> data = List();
     poopsByWeekday.forEach((key, value) => data.add(WeekdaySeries(
-        weekday: weekdayNames[key - 1],
-        events: value,
-    )));
+          weekday: weekdayNames[key - 1],
+          events: value,
+        )));
 
     List<charts.Series<WeekdaySeries, String>> series = [
       charts.Series(
@@ -69,8 +72,8 @@ class WeekdayStatsState extends State<WeekdayStats> {
           data: data,
           domainFn: (WeekdaySeries series, _) => series.weekday,
           measureFn: (WeekdaySeries series, _) => series.events,
-          colorFn: (WeekdaySeries series, _) => charts.ColorUtil.fromDartColor(Colors.blue)
-      )
+          colorFn: (WeekdaySeries series, _) =>
+              charts.ColorUtil.fromDartColor(Colors.blue))
     ];
 
     Widget chart = Container(
@@ -111,19 +114,16 @@ class WeekdayStatsState extends State<WeekdayStats> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Card(
-        child: InkWell(
-          splashColor: Colors.blue.withAlpha(30),
-          onTap: _showDetails,
-          child: Container(
-            width: 300,
-            height: 100,
-            child: Center(
-                child: Text('Din populäraste bajsardag: $mostPopularDay')),
-          ),
-        ),
-      ),
-    );
+        child: StatisticsCard(
+      children: [
+        Text('Din populäraste bajsardag: '),
+        Text(
+          '$mostPopularDay',
+          style: highlightStyle,
+        )
+      ],
+      onTap: _showDetails,
+    ));
   }
 }
 
@@ -131,6 +131,5 @@ class WeekdaySeries {
   final String weekday;
   final int events;
 
-  WeekdaySeries(
-      {@required this.weekday, @required this.events});
+  WeekdaySeries({@required this.weekday, @required this.events});
 }

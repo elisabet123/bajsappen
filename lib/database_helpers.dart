@@ -56,7 +56,6 @@ class DatabaseHelper {
   Future<List<DateTime>> getAllPoops() async {
     Database db = await database;
     List<Map> maps = await db.query(tableName, orderBy: columnEpoch);
-    print(maps.length);
     if (maps.length > 0) {
       List<DateTime> resultList = [];
       maps.forEach((element) => resultList.add(DateTime.fromMillisecondsSinceEpoch(element[columnEpoch])));
