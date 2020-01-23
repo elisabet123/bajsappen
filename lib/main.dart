@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ididitpage.dart';
 import 'package:flutter_app/poopbutton.dart';
+import 'package:flutter_app/statistics/statisticspage.dart';
 
 void main() => runApp(Bajsappen());
 
@@ -38,10 +39,20 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      activeTab = IDidItPage(
-        lastPoop: _poops.isNotEmpty ? _poops.last : null,
-        onPressed: _pooped,
-      );
+      switch(_selectedIndex) {
+        case 1:
+          activeTab = StatisticPage(
+            poops: _poops,
+          );
+          break;
+        default:
+          activeTab = IDidItPage(
+            lastPoop: _poops.isNotEmpty ? _poops.last : null,
+            onPressed: _pooped,
+          );
+          break;
+      }
+
     });
   }
 
