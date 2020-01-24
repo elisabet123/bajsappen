@@ -9,7 +9,7 @@ class CounterWidget extends StatelessWidget {
 
   CounterWidget({Key key, List<DateTime> poops, this.highlightStyle})
       : this.count = poops.length,
-        this.firstPoop = poops.first,
+        this.firstPoop = poops.isNotEmpty ? poops.first : DateTime.now(),
         super(key: key);
 
   @override

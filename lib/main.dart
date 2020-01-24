@@ -34,11 +34,15 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
 
+    print("initing");
     _read().then((_) {
-      activeTab = IDidItPage(
-        lastPoop: _poops.isNotEmpty ? _poops.last : null,
-        onPressed: _pooped,
-      );
+      print("got read");
+      setState(() {
+        activeTab = IDidItPage(
+          lastPoop: _poops.isNotEmpty ? _poops.last : null,
+          onPressed: _pooped,
+        );
+      });
     });
   }
 
