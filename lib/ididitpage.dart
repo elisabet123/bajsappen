@@ -1,4 +1,5 @@
 import 'package:bajsappen/poopbutton.dart';
+import 'package:bajsappen/pooplocalization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -32,9 +33,7 @@ class _IDidItPageState extends State<IDidItPage> {
         children: <Widget>[
           PoopButton(_pooped),
           SizedBox(height: 25.0,),
-          Text(
-            'Senaste bajset:',
-          ),
+          Text(PoopLocalizations.of(context).get('latest_poop')),
           Text(
             _lastPoop != null ? '${DateFormat('yyyy-MM-dd HH:mm').format(_lastPoop)}' : '',
           ),

@@ -3,18 +3,20 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
+import '../pooplocalization.dart';
+
 class WeekdayStats extends StatefulWidget {
   final Map<int, int> poopsByWeekday;
   final String mostPopularDay;
   final TextStyle highlightStyle;
   static final List<String> weekdayNames = [
-    'Måndag',
-    'Tisdag',
-    'Onsdag',
-    'Torsdag',
-    'Fredag',
-    'Lördag',
-    'Söndag'
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+    'sunday'
   ];
 
   WeekdayStats({Key key, List<DateTime> poops, this.highlightStyle})
@@ -62,7 +64,7 @@ class WeekdayStatsState extends State<WeekdayStats> {
   void _showDetails() {
     List<WeekdaySeries> data = List();
     poopsByWeekday.forEach((key, value) => data.add(WeekdaySeries(
-          weekday: weekdayNames[key - 1],
+          weekday: PoopLocalizations.of(context).get(weekdayNames[key - 1]),
           events: value,
         )));
 
@@ -85,7 +87,7 @@ class WeekdayStatsState extends State<WeekdayStats> {
           child: Column(
             children: <Widget>[
               Text(
-                "Totalt antal bajsningar per dag",
+                PoopLocalizations.of(context).get('weekday_chart_title'),
                 style: Theme.of(context).textTheme.body2,
               ),
               Expanded(
@@ -102,7 +104,7 @@ class WeekdayStatsState extends State<WeekdayStats> {
         builder: (BuildContext context) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Veckodagsstatistik'),
+              title: Text(PoopLocalizations.of(context).get('weekday_statistics')),
             ),
             body: chart,
           );
@@ -116,9 +118,9 @@ class WeekdayStatsState extends State<WeekdayStats> {
     return Center(
         child: StatisticsCard(
       children: [
-        Text('Din populäraste bajsardag: '),
+        Text(PoopLocalizations.of(context).get('popular_poopday')),
         Text(
-          '$mostPopularDay',
+          PoopLocalizations.of(context).get(mostPopularDay),
           style: highlightStyle,
         )
       ],

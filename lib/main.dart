@@ -1,8 +1,10 @@
 import 'package:bajsappen/statistics/statisticspage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'database_helpers.dart';
 import 'ididitpage.dart';
+import 'pooplocalization.dart';
 
 void main() => runApp(Bajsappen());
 
@@ -11,7 +13,15 @@ class Bajsappen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Bajsappen',
+      onGenerateTitle: (BuildContext context) => PoopLocalizations.of(context).title,
+      localizationsDelegates: [
+        const DemoLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('sv'), // Swedish
+      ],
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
@@ -34,9 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
 
-    print("initing");
     _read().then((_) {
-      print("got read");
       setState(() {
         activeTab = IDidItPage(
           lastPoop: _poops.isNotEmpty ? _poops.last : null,
@@ -90,20 +98,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var myLocale = PoopLocalizations.of(context);
+    print(myLocale.locale);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bajsappen'),
+        title: Text(PoopLocalizations.of(context).title),
       ),
       body: activeTab,
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.spa),
-            title: Text('Home'),
+            title: Text(PoopLocalizations.of(context).get('home')),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.show_chart),
-            title: Text('Statistik'),
+            title: Text(PoopLocalizations.of(context).get('statistics')),
           ),
         ],
         currentIndex: _selectedIndex,
