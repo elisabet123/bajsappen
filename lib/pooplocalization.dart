@@ -31,24 +31,6 @@ class PoopLocalizations {
       'weekday_statistics': 'Veckodagsstatistik',
       'weekday_chart_title': 'Totalt antal bajsningar per dag',
     },
-    'en': {
-      'title': 'Bajsappen',
-      'home': 'Registrera bajs',
-      'statistics': 'Statistik',
-      'latest_poop': 'Senaste bajset: ',
-      'you_have_pooped': 'Du har bajsat ',
-      'times_since': ' gånger sedan ',
-      'popular_poopday': 'Din populäraste bajsardag: ',
-      'monday': 'Måndag',
-      'tuesday': 'Tisdag',
-      'wednesday': 'Onsdag',
-      'thursday': 'Torsdag',
-      'friday': 'Fredag',
-      'saturday': 'Lördag',
-      'sunday': 'Söndag',
-      'weekday_statistics': 'Veckodagsstatistik',
-      'weekday_chart_title': 'Totalt antal bajsningar per dag',
-    },
   };
 
   String get title {
