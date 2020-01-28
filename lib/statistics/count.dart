@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../pooplocalization.dart';
+import 'allpooppage.dart';
 
 class CounterWidget extends StatelessWidget {
   final int count;
   final DateTime firstPoop;
-  final TextStyle highlightStyle;
+  final TextStyle _highlightStyle;
+  final List<DateTime> _poops;
+  final Function(DateTime) _onPoopDeleted;
 
-  CounterWidget({Key key, List<DateTime> poops, this.highlightStyle})
-      : this.count = poops.length,
-        this.firstPoop = poops.isNotEmpty ? poops.first : DateTime.now(),
+  CounterWidget(this._poops, this._highlightStyle, this._onPoopDeleted, {Key key})
+      : this.count = _poops.length,
+        this.firstPoop = _poops.isNotEmpty ? _poops.first : DateTime.now(),
         super(key: key);
 
   @override
@@ -22,12 +25,12 @@ class CounterWidget extends StatelessWidget {
           Text(PoopLocalizations.of(context).get('you_have_pooped')),
           Text(
             '$count',
-            style: highlightStyle,
+            style: _highlightStyle,
           ),
           Text(PoopLocalizations.of(context).get('times_since')),
           Text('${DateFormat('yyyy-MM-dd').format(firstPoop)}'),
         ],
-        onTap: () {},
+        onTap: () => Navigator.of(context).push(AllPoopPage(_poops, _onPoopDeleted).getMaterialPageRoute()),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:bajsappen/statistics/allpooppage.dart';
 import 'package:bajsappen/statistics/statisticspage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -69,6 +70,12 @@ class _MyHomePageState extends State<MyHomePage> {
     await helper.insert(poop);
   }
 
+  _deletePoop(DateTime poop) async {
+    DatabaseHelper helper = DatabaseHelper.instance;
+    await helper.delete(poop);
+    this._read();
+  }
+
   void _pooped(DateTime latestPoop) async {
     await _savePoop(latestPoop);
 
@@ -83,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
       switch (_selectedIndex) {
         case 1:
           activeTab = StatisticPage(
-            poops: _poops,
+            _deletePoop
           );
           break;
         default:
@@ -96,14 +103,22 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _showList() {
+    Navigator.of(context).push(
+      AllPoopPage(_poops, _deletePoop).getMaterialPageRoute()
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    var myLocale = PoopLocalizations.of(context);
-    print(myLocale.locale);
     return Scaffold(
       appBar: AppBar(
         title: Text(PoopLocalizations.of(context).title),
+        actions: <Widget>[      // Add 3 lines from here...
+          IconButton(icon: Icon(Icons.list), onPressed: _showList),
+        ],
       ),
+
       body: activeTab,
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[

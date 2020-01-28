@@ -30,6 +30,7 @@ class PoopLocalizations {
       'sunday': 'Söndag',
       'weekday_statistics': 'Veckodagsstatistik',
       'weekday_chart_title': 'Totalt antal bajsningar per dag',
+      'all_poops': 'Alla registrerade bajsningar',
     },
   };
 

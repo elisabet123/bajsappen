@@ -53,6 +53,16 @@ class DatabaseHelper {
     return id;
   }
 
+  Future<bool> delete(DateTime poop) async {
+    Database db = await database;
+    int id = await db.delete(
+        tableName,
+        where: '$columnEpoch = ?',
+        whereArgs: [poop.millisecondsSinceEpoch]
+    );
+    return id > 0;
+  }
+
   Future<List<DateTime>> getAllPoops() async {
     Database db = await database;
     List<Map> maps = await db.query(tableName, orderBy: columnEpoch);
