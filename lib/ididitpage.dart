@@ -1,5 +1,6 @@
 import 'package:bajsappen/poopbutton.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class IDidItPage extends StatefulWidget {
   IDidItPage({Key key, this.lastPoop, this.onPressed}) : super(key: key);
@@ -32,10 +33,10 @@ class _IDidItPageState extends State<IDidItPage> {
           PoopButton(_pooped),
           SizedBox(height: 25.0,),
           Text(
-            'Last time you pooped:',
+            'Senaste bajset:',
           ),
           Text(
-            _lastPoop != null ? '$_lastPoop' : '',
+            _lastPoop != null ? '${DateFormat('yyyy-MM-dd HH:mm').format(_lastPoop)}' : '',
           ),
         ],
       ),
