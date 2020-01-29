@@ -17,51 +17,59 @@ class AllPoopPage {
     );
   }
 
-  Future<bool> confirmDismiss(DismissDirection direction, BuildContext context) async {
+  Future<bool> confirmDismiss(
+      DismissDirection direction, BuildContext context) async {
     return await showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(PoopLocalizations.of(context).get('remove_poop_title')),
-            content: Text(PoopLocalizations.of(context).get('remove_poop_question')),
+            content:
+                Text(PoopLocalizations.of(context).get('remove_poop_question')),
             actions: <Widget>[
               FlatButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: Text(PoopLocalizations.of(context).get('remove'))
-              ),
+                  child: Text(PoopLocalizations.of(context).get('remove'))),
               FlatButton(
                 onPressed: () => Navigator.of(context).pop(false),
                 child: Text(PoopLocalizations.of(context).get('cancel')),
               ),
             ],
           );
-        }
-    );
+        });
   }
 
   WidgetBuilder builder() {
     return (BuildContext context) {
       final Iterable<Dismissible> tiles = poops.map(
-            (DateTime pooptime) {
+        (DateTime pooptime) {
           return Dismissible(
             key: Key(pooptime.millisecondsSinceEpoch.toString()),
             onDismissed: (direction) {
               _onDismissed(pooptime).then((_) {
                 // undo?
-                scaffold
-                    .showSnackBar(
-                    SnackBar(content: Text('${DateFormat('yyyy-MM-dd HH:mm').format(pooptime)}' + PoopLocalizations.of(context).get('removed'))));
+                scaffold.showSnackBar(SnackBar(
+                    content: Text(
+                        '${DateFormat('yyyy-MM-dd HH:mm').format(pooptime)}' +
+                            PoopLocalizations.of(context).get('removed'))));
               });
             },
             child: ListTile(
               title: Text(
                 '${DateFormat('yyyy-MM-dd HH:mm').format(pooptime)}',
               ),
-              onTap: () {
-                print('hej');
-              },
             ),
-            confirmDismiss: (DismissDirection direction) => confirmDismiss(direction, context),
+            background: Container(
+              alignment: AlignmentDirectional.centerEnd,
+              color: Colors.red,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
+                child: Icon(Icons.delete, color: Colors.white),
+              ),
+            ),
+            direction: DismissDirection.endToStart,
+            confirmDismiss: (DismissDirection direction) =>
+                confirmDismiss(direction, context),
           );
         },
       );
