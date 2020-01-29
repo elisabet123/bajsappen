@@ -4,7 +4,9 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 class AllPoopPage {
-  AllPoopPage(this.poops, this._onDismissed);
+  AllPoopPage(this.poops, this._onDismissed) {
+    this.poops.sort((a, b) => b.compareTo(a));
+  }
 
   final List<DateTime> poops;
   final Function(DateTime) _onDismissed;
