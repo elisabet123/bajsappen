@@ -10,26 +10,21 @@ class PoopButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Ink(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.brown[900], width: 5.0),
-        color: Colors.brown[500],
-        shape: BoxShape.circle,
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(100.0),
-        onTap: () {
-//            var weekday = random.nextInt(7);
-//            var date = DateTime.now().subtract(Duration(days: weekday));
-//            this.onPressed(date);
-          this.onPressed(DateTime.now());
-        },
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(30.0, 25.0, 30.0, 40.0),
-          child: Text(
-            '💩',
-            style: TextStyle(fontSize: 100),
-          ),
+    return new RaisedButton(
+      padding: const EdgeInsets.all(8.0),
+      color: Color.fromARGB(255, 75, 53, 41),
+      highlightColor: Colors.brown,
+      onPressed: () {
+        this.onPressed(DateTime.now());
+      },
+      shape: CircleBorder(side: BorderSide(color: Colors.brown, width: 3)),
+      elevation: 10.0,
+      highlightElevation: 3.0,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(30.0, 25.0, 30.0, 40.0),
+        child: Text(
+          '💩',
+          style: TextStyle(fontSize: 100),
         ),
       ),
     );
