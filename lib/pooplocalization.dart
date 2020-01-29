@@ -31,6 +31,11 @@ class PoopLocalizations {
       'weekday_statistics': 'Veckodagsstatistik',
       'weekday_chart_title': 'Totalt antal bajsningar per dag',
       'all_poops': 'Alla registrerade bajsningar',
+      'remove_poop_title': 'Ta bort bajsning',
+      'remove_poop_question': 'Är du säker på att du vill ta bort bajsningen?',
+      'remove': 'Ta bort',
+      'cancel': 'Avbryt',
+      'removed': ' borttagen',
     },
   };
 
