@@ -13,7 +13,6 @@ class StatisticPage extends StatefulWidget {
 }
 
 class _StatisticPageState extends State<StatisticPage> {
-  List<DateTime> _poops;
   List<Widget> statisticsWidgets = [];
   final Function(DateTime) _onPoopDeleted;
   final TextStyle highlightStyle = TextStyle(
@@ -42,7 +41,6 @@ class _StatisticPageState extends State<StatisticPage> {
   _StatisticPageState(this._onPoopDeleted) {
     _refresh().then((poops) {
       setState(() {
-        _poops = poops;
         statisticsWidgets = statisticsWidgets;
       });
     });

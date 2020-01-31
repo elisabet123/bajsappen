@@ -34,8 +34,11 @@ class PoopLocalizations {
       'remove_poop_title': 'Ta bort bajsning',
       'remove_poop_question': 'Är du säker på att du vill ta bort bajsningen?',
       'remove': 'Ta bort',
+      'add': 'Lägg till',
       'cancel': 'Avbryt',
       'removed': ' borttagen',
+      'add_poop_title': 'Lägg till ny bajsning',
+      'change_date': 'Ändra dag/tid',
     },
   };
 

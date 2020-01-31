@@ -45,14 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
 
-    _read().then((_) {
-      setState(() {
-        activeTab = IDidItPage(
-          lastPoop: _poops.isNotEmpty ? _poops.last : null,
-          onPressed: _pooped,
-        );
-      });
-    });
+    _read();
   }
 
   _read() async {
@@ -61,6 +54,11 @@ class _MyHomePageState extends State<MyHomePage> {
     if (poops != null) {
       setState(() {
         _poops = poops;
+        print("hej ${poops.last} ${_poops.last}");
+        activeTab = IDidItPage(
+          poops.isNotEmpty ? poops.last : null,
+          _savePoop,
+        );
       });
     }
   }
@@ -68,20 +66,13 @@ class _MyHomePageState extends State<MyHomePage> {
   _savePoop(DateTime poop) async {
     DatabaseHelper helper = DatabaseHelper.instance;
     await helper.insert(poop);
+    await this._read();
   }
 
   _deletePoop(DateTime poop) async {
     DatabaseHelper helper = DatabaseHelper.instance;
     await helper.delete(poop);
-    this._read();
-  }
-
-  void _pooped(DateTime latestPoop) async {
-    await _savePoop(latestPoop);
-
-    setState(() {
-      this._poops.add(latestPoop);
-    });
+    await this._read();
   }
 
   void _onNavItemTapped(int index) {
@@ -95,8 +86,8 @@ class _MyHomePageState extends State<MyHomePage> {
           break;
         default:
           activeTab = IDidItPage(
-            lastPoop: _poops.isNotEmpty ? _poops.last : null,
-            onPressed: _pooped,
+            _poops.isNotEmpty ? _poops.last : null,
+            _savePoop,
           );
           break;
       }
