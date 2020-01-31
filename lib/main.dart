@@ -14,7 +14,8 @@ class Bajsappen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      onGenerateTitle: (BuildContext context) => PoopLocalizations.of(context).title,
+      onGenerateTitle: (BuildContext context) =>
+          PoopLocalizations.of(context).title,
       localizationsDelegates: [
         const DemoLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
@@ -27,6 +28,7 @@ class Bajsappen extends StatelessWidget {
         primarySwatch: Colors.brown,
       ),
       home: MyHomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -80,9 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _selectedIndex = index;
       switch (_selectedIndex) {
         case 1:
-          activeTab = StatisticPage(
-            _deletePoop
-          );
+          activeTab = StatisticPage(_deletePoop);
           break;
         default:
           activeTab = IDidItPage(
@@ -95,9 +95,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _showList() {
-    Navigator.of(context).push(
-      AllPoopPage(_poops, _deletePoop).getMaterialPageRoute()
-    );
+    Navigator.of(context)
+        .push(AllPoopPage(_poops, _deletePoop).getMaterialPageRoute());
   }
 
   @override
@@ -105,11 +104,11 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(PoopLocalizations.of(context).title),
-        actions: <Widget>[      // Add 3 lines from here...
+        actions: <Widget>[
+          // Add 3 lines from here...
           IconButton(icon: Icon(Icons.list), onPressed: _showList),
         ],
       ),
-
       body: activeTab,
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
