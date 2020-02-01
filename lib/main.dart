@@ -52,17 +52,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _read() async {
     DatabaseHelper helper = DatabaseHelper.instance;
-    var poops = await helper.getAllPoops();
-    if (poops != null) {
-      setState(() {
-        _poops = poops;
-        print("hej ${poops.last} ${_poops.last}");
-        activeTab = IDidItPage(
-          poops.isNotEmpty ? poops.last : null,
-          _savePoop,
-        );
-      });
-    }
+    var poops = await helper.getAllPoops() ?? [];
+    setState(() {
+      _poops = poops;
+      activeTab = IDidItPage(
+        poops != null && poops.isNotEmpty ? poops.last : null,
+        _savePoop,
+      );
+    });
   }
 
   _savePoop(DateTime poop) async {

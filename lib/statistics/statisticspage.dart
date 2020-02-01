@@ -28,7 +28,7 @@ class _StatisticPageState extends State<StatisticPage> {
 
   _refresh() async {
     DatabaseHelper helper = DatabaseHelper.instance;
-    List<DateTime> poops = await helper.getAllPoops();
+    List<DateTime> poops = await helper.getAllPoops() ?? [];
 
     List<Widget> refreshedWidgets = [];
     refreshedWidgets.add(

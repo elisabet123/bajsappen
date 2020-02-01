@@ -120,7 +120,7 @@ class WeekdayStatsState extends State<WeekdayStats> {
       children: [
         Text(PoopLocalizations.of(context).get('popular_poopday')),
         Text(
-          PoopLocalizations.of(context).get(mostPopularDay),
+          PoopLocalizations.of(context).get(mostPopularDay) ?? '',
           style: highlightStyle,
         )
       ],
