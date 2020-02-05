@@ -35,23 +35,23 @@ class Bajsappen extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  MyHomePageState createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   Widget activeTab;
   List<DateTime> _poops = [];
+  DatabaseHelper helper = DatabaseHelper.instance;
 
   @override
   void initState() {
     super.initState();
 
-    _read();
+    read();
   }
 
-  _read() async {
-    DatabaseHelper helper = DatabaseHelper.instance;
+  read() async {
     var poops = await helper.getAllPoops() ?? [];
     setState(() {
       _poops = poops;
@@ -63,15 +63,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _savePoop(DateTime poop) async {
-    DatabaseHelper helper = DatabaseHelper.instance;
     await helper.insert(poop);
-    await this._read();
+    await this.read();
   }
 
   _deletePoop(DateTime poop) async {
-    DatabaseHelper helper = DatabaseHelper.instance;
     await helper.delete(poop);
-    await this._read();
+    await this.read();
   }
 
   void _onNavItemTapped(int index) {
