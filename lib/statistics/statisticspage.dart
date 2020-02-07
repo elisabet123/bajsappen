@@ -1,4 +1,5 @@
 import 'package:bajsappen/statistics/count.dart';
+import 'package:bajsappen/statistics/timeofday.dart';
 import 'package:bajsappen/statistics/weekday.dart';
 import 'package:flutter/material.dart';
 
@@ -35,6 +36,8 @@ class _StatisticPageState extends State<StatisticPage> {
         CounterWidget(poops, highlightStyle, onPoopDeleted,));
     refreshedWidgets.add(
         WeekdayStats(poops: poops, highlightStyle: highlightStyle));
+    refreshedWidgets.add(
+        TimeOfDayStats(poops, highlightStyle: highlightStyle));
     statisticsWidgets = refreshedWidgets;
   }
 

@@ -15,11 +15,10 @@ class StatisticsCard extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.all(20),
           child: Row(
-            children: children
+            children: children,
           ),
         ),
       ),
     );
   }
-
 }

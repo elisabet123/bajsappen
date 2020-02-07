@@ -39,6 +39,18 @@ class PoopLocalizations {
       'removed': ' borttagen',
       'add_poop_title': 'Lägg till ny bajsning',
       'change_date': 'Ändra dag/tid',
+      'popular_pooptime': 'Du brukar bajsa på ',
+      'night': 'natt',
+      'the_night': 'natten',
+      'morning': 'morgon',
+      'the_morning': 'morgonen',
+      'afternoon': 'eftermiddag',
+      'the_afternoon': 'eftermiddagen',
+      'evening': 'kväll',
+      'the_evening': 'kvällen',
+      'poops_per_hour': 'Bajsningar per timme',
+      'poops_per_time_of_day': 'Bajsningar per tid på dygnet',
+      'time_statistics': 'Tidsstatistik',
     },
   };
 
