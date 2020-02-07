@@ -53,12 +53,20 @@ class MyHomePageState extends State<MyHomePage> {
 
   read() async {
     var poops = await helper.getAllPoops() ?? [];
+
     setState(() {
       _poops = poops;
-      activeTab = IDidItPage(
-        poops != null && poops.isNotEmpty ? poops.last : null,
-        _savePoop,
-      );
+      switch (_selectedIndex) {
+        case 1:
+          activeTab = StatisticPage();
+          break;
+        default:
+          activeTab = IDidItPage(
+            poops != null && poops.isNotEmpty ? poops.last : null,
+            _savePoop,
+          );
+          break;
+      }
     });
   }
 
@@ -77,7 +85,7 @@ class MyHomePageState extends State<MyHomePage> {
       _selectedIndex = index;
       switch (_selectedIndex) {
         case 1:
-          activeTab = StatisticPage(_deletePoop);
+          activeTab = StatisticPage();
           break;
         default:
           activeTab = IDidItPage(

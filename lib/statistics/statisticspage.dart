@@ -6,16 +6,15 @@ import 'package:flutter/material.dart';
 import '../database_helpers.dart';
 
 class StatisticPage extends StatefulWidget {
-  StatisticPage(this._onPoopDeleted, {Key key}) : super(key: key);
-  final Function(DateTime) _onPoopDeleted;
+  StatisticPage({Key key}) : super(key: key);
 
   @override
-  _StatisticPageState createState() => _StatisticPageState(_onPoopDeleted);
+  StatisticPageState createState() => StatisticPageState();
 }
 
-class _StatisticPageState extends State<StatisticPage> {
+class StatisticPageState extends State<StatisticPage> {
   List<Widget> statisticsWidgets = [];
-  final Function(DateTime) _onPoopDeleted;
+  DatabaseHelper helper = DatabaseHelper.instance;
   final TextStyle highlightStyle = TextStyle(
     color: Colors.deepOrange,
     fontSize: 20,
@@ -23,26 +22,27 @@ class _StatisticPageState extends State<StatisticPage> {
   );
 
   void onPoopDeleted(DateTime poop) async {
-    await _onPoopDeleted(poop);
-    await _refresh();
+    await helper.delete(poop);
+    await refresh();
   }
 
-  _refresh() async {
-    DatabaseHelper helper = DatabaseHelper.instance;
+  refresh() async {
     List<DateTime> poops = await helper.getAllPoops() ?? [];
 
     List<Widget> refreshedWidgets = [];
-    refreshedWidgets.add(
-        CounterWidget(poops, highlightStyle, onPoopDeleted,));
-    refreshedWidgets.add(
-        WeekdayStats(poops: poops, highlightStyle: highlightStyle));
-    refreshedWidgets.add(
-        TimeOfDayStats(poops, highlightStyle: highlightStyle));
+    refreshedWidgets.add(CounterWidget(
+      poops,
+      highlightStyle,
+      onPoopDeleted,
+    ));
+    refreshedWidgets
+        .add(WeekdayStats(poops: poops, highlightStyle: highlightStyle));
+    refreshedWidgets.add(TimeOfDayStats(poops, highlightStyle: highlightStyle));
     statisticsWidgets = refreshedWidgets;
   }
 
-  _StatisticPageState(this._onPoopDeleted) {
-    _refresh().then((poops) {
+  StatisticPageState() {
+    refresh().then((poops) {
       setState(() {
         statisticsWidgets = statisticsWidgets;
       });
