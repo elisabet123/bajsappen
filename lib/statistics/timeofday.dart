@@ -162,7 +162,6 @@ class ChartPageState extends State<ChartPage> {
 
     return Scaffold(
       appBar: AppBar(
-        // TODO fix
         title: Text(PoopLocalizations.of(context).get('time_statistics')),
       ),
       body: ListView(
