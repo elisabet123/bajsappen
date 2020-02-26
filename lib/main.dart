@@ -99,7 +99,7 @@ class MyHomePageState extends State<MyHomePage> {
 
   void _showList() {
     Navigator.of(context)
-        .push(AllPoopPage(_poops, _deletePoop).getMaterialPageRoute());
+        .push(MaterialPageRoute(builder: (context) => AllPoopPage(_poops, _deletePoop)));
   }
 
   @override

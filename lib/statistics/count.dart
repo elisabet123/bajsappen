@@ -30,7 +30,7 @@ class CounterWidget extends StatelessWidget {
           Text(PoopLocalizations.of(context).get('times_since')),
           Text('${DateFormat('yyyy-MM-dd').format(firstPoop)}'),
         ],
-        onTap: () => Navigator.of(context).push(AllPoopPage(_poops, _onPoopDeleted).getMaterialPageRoute()),
+        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllPoopPage(_poops, _onPoopDeleted))),
       ),
     );
   }
