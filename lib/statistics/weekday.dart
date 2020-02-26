@@ -29,16 +29,14 @@ class WeekdayStats extends StatefulWidget {
       poopsByWeekday, mostPopularDay, weekdayNames, highlightStyle);
 
   static Map<int, int> groupByDay(List<DateTime> poops) {
-    Map<int, List<DateTime>> days =
-        groupBy(poops, (datetime) => datetime.weekday);
+    Map<int, int> poopsPerDay = new Map();
+    new List<int>.generate(7, (i) {
+      poopsPerDay[i] = 0;
+      return i + 1;
+    });
 
-    // I could not find a sortBy method for maps
-    var dataUnSorted = days.map((key, value) => MapEntry(key, value.length));
-    Map<int, int> dataSorted = Map();
-    var keysSorted = dataUnSorted.keys.toList()..sort();
-    keysSorted.forEach((index) => dataSorted[index] = dataUnSorted[index]);
-
-    return dataSorted;
+    poops.forEach((DateTime dt) => poopsPerDay[dt.weekday - 1]++);
+    return poopsPerDay;
   }
 
   static String getMostPopularDay(Map<int, int> dailyStats) {
@@ -64,7 +62,7 @@ class WeekdayStatsState extends State<WeekdayStats> {
   void _showDetails() {
     List<WeekdaySeries> data = List();
     poopsByWeekday.forEach((key, value) => data.add(WeekdaySeries(
-          weekday: PoopLocalizations.of(context).get(weekdayNames[key - 1]),
+          weekday: PoopLocalizations.of(context).get(weekdayNames[key]).substring(0,3),
           events: value,
         )));
 
