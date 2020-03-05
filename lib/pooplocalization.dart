@@ -51,6 +51,13 @@ class PoopLocalizations {
       'poops_per_hour': 'Bajsningar per timme',
       'poops_per_time_of_day': 'Bajsningar per tid på dygnet',
       'time_statistics': 'Tidsstatistik',
+      'type_1_description': 'Separata hårda klumpar, som nötter (svåra att klämma ut)',
+      'type_2_description': 'Korvformade, med klumpar',
+      'type_3_description': 'Som en korv med sprickor på dess yta',
+      'type_4_description': 'Som en korv eller orm, jämn och mjuk',
+      'type_5_description': 'Mjuka klumpar med tydliga kanter (lätta att klämma ut)',
+      'type_6_description': 'Fluffiga bitar med trasade kanter, en mosig konsistens',
+      'type_7_description': 'Vattnig utan bitar. Helt flytande.',
     },
   };
 
