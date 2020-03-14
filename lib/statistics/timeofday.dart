@@ -1,3 +1,4 @@
+import 'package:bajsappen/poop.dart';
 import 'package:bajsappen/statistics/statisticscard.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:collection/collection.dart';
@@ -7,7 +8,7 @@ import '../pooplocalization.dart';
 
 class TimeOfDayStats extends StatefulWidget {
   final TextStyle highlightStyle;
-  final List<DateTime> poops;
+  final List<Poop> poops;
 
   TimeOfDayStats(this.poops, {Key key, this.highlightStyle});
 
@@ -17,7 +18,7 @@ class TimeOfDayStats extends StatefulWidget {
 }
 
 class TimeOfDayStatsState extends State<TimeOfDayStats> {
-  final List<DateTime> poops;
+  final List<Poop> poops;
   final Map<int, int> poopsPerHour;
   final Map<int, int> poopsPerTimeOfDay;
   final TextStyle highlightStyle;
@@ -34,14 +35,14 @@ class TimeOfDayStatsState extends State<TimeOfDayStats> {
     _groupByTimeOfDay();
   }
 
-  static Map<int, int> _groupByHour(List<DateTime> poops) {
+  static Map<int, int> _groupByHour(List<Poop> poops) {
     Map<int, int> poopsPerHour = new Map();
     new List<int>.generate(24, (i) {
       poopsPerHour[i] = 0;
       return i + 1;
     });
 
-    poops.forEach((DateTime dt) => poopsPerHour[dt.hour]++);
+    poops.forEach((Poop poop) => poopsPerHour[poop.dateTime.hour]++);
     return poopsPerHour;
   }
 

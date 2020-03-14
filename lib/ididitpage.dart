@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 
 class IDidItPage extends StatelessWidget {
   IDidItPage(this._lastPoop, this.onPressed, {Key key}) : super(key: key);
-  final DateTime _lastPoop;
+  final Poop _lastPoop;
   final Function(Poop) onPressed;
 
   @override
@@ -19,7 +19,7 @@ class IDidItPage extends StatelessWidget {
           SizedBox(height: 25.0,),
           Text(PoopLocalizations.of(context).get('latest_poop')),
           Text(
-            _lastPoop != null ? '${DateFormat('yyyy-MM-dd HH:mm').format(_lastPoop)}' : '',
+            _lastPoop != null ? '${DateFormat('yyyy-MM-dd HH:mm').format(_lastPoop.dateTime)}' : '',
           ),
         ],
       ),

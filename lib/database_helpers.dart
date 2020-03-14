@@ -35,10 +35,10 @@ class DatabaseHelper {
     String path = join(documentsDirectory.path, _databaseName);
     // Open the database. Can also add an onUpdate callback parameter.
     return await openDatabase(
-        path,
-        version: _databaseVersion,
-        onCreate: _onCreate,
-        onUpgrade: _onUpgrade,
+      path,
+      version: _databaseVersion,
+      onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
     );
   }
 
@@ -61,36 +61,32 @@ class DatabaseHelper {
   }
 
   // Database helper methods:
-  Future<int> insert(DateTime poop) async {
-    Database db = await database;
-    int id = await db.insert(tableName,
-        <String, dynamic>{columnEpoch: poop.millisecondsSinceEpoch});
-    return id;
-  }
-
   Future<int> insertPoop(Poop poop) async {
     Database db = await database;
-    int id = await db.insert(tableName,
-        <String, dynamic>{columnEpoch: poop.dateTime.millisecondsSinceEpoch, columnHardness: poop.hardness});
+    int id = await db.insert(tableName, <String, dynamic>{
+      columnEpoch: poop.dateTime.millisecondsSinceEpoch,
+      columnHardness: poop.hardness
+    });
     return id;
   }
 
-  Future<bool> delete(DateTime poop) async {
+  Future<bool> delete(Poop poop) async {
     Database db = await database;
-    int id = await db.delete(
-        tableName,
+    int id = await db.delete(tableName,
         where: '$columnEpoch = ?',
-        whereArgs: [poop.millisecondsSinceEpoch]
-    );
+        whereArgs: [poop.dateTime.millisecondsSinceEpoch]);
     return id > 0;
   }
 
-  Future<List<DateTime>> getAllPoops() async {
+  Future<List<Poop>> getAllPoops() async {
     Database db = await database;
     List<Map> maps = await db.query(tableName, orderBy: columnEpoch);
     if (maps.length > 0) {
-      List<DateTime> resultList = [];
-      maps.forEach((element) => resultList.add(DateTime.fromMillisecondsSinceEpoch(element[columnEpoch])));
+      List<Poop> resultList = [];
+      maps.forEach((element) => resultList.add(Poop(
+            DateTime.fromMillisecondsSinceEpoch(element[columnEpoch]),
+            element[columnHardness],
+          )));
       return resultList;
     }
     return null;
