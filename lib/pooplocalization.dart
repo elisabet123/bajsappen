@@ -58,6 +58,13 @@ class PoopLocalizations {
       'type_5_description': 'Mjuka klumpar med tydliga kanter (lätta att klämma ut)',
       'type_6_description': 'Fluffiga bitar med trasade kanter, en mosig konsistens',
       'type_7_description': 'Vattnig utan bitar. Helt flytande.',
+      'constipation_statistics': 'Bajstypsstatistik',
+      'constipation_chart_title': 'Antal bajsningar per typ',
+      'constipation_text_1': 'Du verkar vara ',
+      'constipation_text_2': ' i magen.',
+      'constipation_grade_0': 'hård',
+      'constipation_grade_1': 'normal',
+      'constipation_grade_2': 'lös',
     },
   };
 

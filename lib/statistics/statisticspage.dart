@@ -1,3 +1,4 @@
+import 'package:bajsappen/statistics/constipation.dart';
 import 'package:bajsappen/statistics/count.dart';
 import 'package:bajsappen/statistics/timeofday.dart';
 import 'package:bajsappen/statistics/weekday.dart';
@@ -39,6 +40,7 @@ class StatisticPageState extends State<StatisticPage> {
     refreshedWidgets
         .add(WeekdayStats(poops: poops, highlightStyle: highlightStyle));
     refreshedWidgets.add(TimeOfDayStats(poops, highlightStyle: highlightStyle));
+    refreshedWidgets.add(ConstipationStats(poops: poops, highlightStyle: highlightStyle));
     statisticsWidgets = refreshedWidgets;
   }
 
