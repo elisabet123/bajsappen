@@ -1,3 +1,4 @@
+import 'package:bajsappen/poop.dart';
 import 'package:bajsappen/statistics/allpooppage.dart';
 import 'package:bajsappen/statistics/statisticspage.dart';
 import 'package:flutter/material.dart';
@@ -70,8 +71,8 @@ class MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  _savePoop(DateTime poop) async {
-    await helper.insert(poop);
+  _savePoop(Poop poop) async {
+    await helper.insertPoop(poop);
     await this.read();
   }
 

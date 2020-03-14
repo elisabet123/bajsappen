@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
+import '../poop.dart';
+
 class PoopButtonAddDialog extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -179,7 +181,6 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
                                             hardness = newValue;
                                             hardnessChanged = true;
                                           });
-                                          print(newValue);
                                         },
                                       ),
                                     )),
@@ -203,7 +204,7 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
                 child: Text(PoopLocalizations.of(context).get('cancel')),
               ),
               FlatButton(
-                  onPressed: () => Navigator.of(context).pop(_poop),
+                  onPressed: () => Navigator.of(context).pop(Poop(_poop, hardness)),
                   child: Text(PoopLocalizations.of(context).get('add'))),
             ],
           ),

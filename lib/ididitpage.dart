@@ -1,3 +1,4 @@
+import 'package:bajsappen/poop.dart';
 import 'package:bajsappen/poopbutton.dart';
 import 'package:bajsappen/pooplocalization.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,7 @@ import 'package:intl/intl.dart';
 class IDidItPage extends StatelessWidget {
   IDidItPage(this._lastPoop, this.onPressed, {Key key}) : super(key: key);
   final DateTime _lastPoop;
-  final Function(DateTime) onPressed;
+  final Function(Poop) onPressed;
 
   @override
   Widget build(BuildContext context) {

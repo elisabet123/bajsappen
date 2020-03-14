@@ -1,9 +1,10 @@
+import 'package:bajsappen/poop.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'addpoopdialog/addpoopdialog.dart';
 
 class PoopButton extends StatefulWidget {
-  final Function(DateTime) onPressed;
+  final Function(Poop) onPressed;
 
   PoopButton(this.onPressed) : super();
 
@@ -14,7 +15,7 @@ class PoopButton extends StatefulWidget {
 }
 
 class PoopButtonState extends State<PoopButton> {
-  final Function(DateTime) onPressed;
+  final Function(Poop) onPressed;
 
   PoopButtonState(this.onPressed) : super();
 
@@ -25,7 +26,7 @@ class PoopButtonState extends State<PoopButton> {
       color: Color.fromARGB(255, 75, 53, 41),
       highlightColor: Colors.brown,
       onPressed: () async {
-        var poop = await showDialog(
+        Poop poop = await showDialog(
             context: context,
             builder: (_) {
               return PoopButtonAddDialog();

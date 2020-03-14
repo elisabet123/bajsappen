@@ -1,16 +1,18 @@
 import 'dart:io';
 
+import 'package:bajsappen/poop.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 final String tableName = 'poopTable';
 final String columnEpoch = 'epoch';
+final String columnHardness = 'hardness';
 
 // singleton class to manage the database
 class DatabaseHelper {
   static final _databaseName = "Bajsappen.db";
-  static final _databaseVersion = 1;
+  static final _databaseVersion = 2;
 
   // Make this a singleton class.
   DatabaseHelper._privateConstructor();
@@ -32,17 +34,30 @@ class DatabaseHelper {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
     // Open the database. Can also add an onUpdate callback parameter.
-    return await openDatabase(path,
-        version: _databaseVersion, onCreate: _onCreate);
+    return await openDatabase(
+        path,
+        version: _databaseVersion,
+        onCreate: _onCreate,
+        onUpgrade: _onUpgrade,
+    );
   }
 
   // SQL string to create the database
   Future _onCreate(Database db, int version) async {
     await db.execute('''
               CREATE TABLE $tableName (
-                $columnEpoch INTEGER PRIMARY KEY
+                $columnEpoch INTEGER PRIMARY KEY,
+                $columnHardness DOUBLE
               )
               ''');
+  }
+
+  Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion == 1 && newVersion == 2) {
+      await db.execute('''
+              ALTER TABLE $tableName add column $columnHardness DOUBLE 
+              ''');
+    }
   }
 
   // Database helper methods:
@@ -50,6 +65,13 @@ class DatabaseHelper {
     Database db = await database;
     int id = await db.insert(tableName,
         <String, dynamic>{columnEpoch: poop.millisecondsSinceEpoch});
+    return id;
+  }
+
+  Future<int> insertPoop(Poop poop) async {
+    Database db = await database;
+    int id = await db.insert(tableName,
+        <String, dynamic>{columnEpoch: poop.dateTime.millisecondsSinceEpoch, columnHardness: poop.hardness});
     return id;
   }
 
