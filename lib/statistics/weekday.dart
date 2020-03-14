@@ -1,3 +1,4 @@
+import 'package:bajsappen/poop.dart';
 import 'package:bajsappen/statistics/statisticscard.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:collection/collection.dart';
@@ -19,7 +20,7 @@ class WeekdayStats extends StatefulWidget {
     'sunday'
   ];
 
-  WeekdayStats({Key key, List<DateTime> poops, this.highlightStyle})
+  WeekdayStats({Key key, List<Poop> poops, this.highlightStyle})
       : this.poopsByWeekday = groupByDay(poops),
         this.mostPopularDay = getMostPopularDay(groupByDay(poops)),
         super(key: key);
@@ -28,14 +29,14 @@ class WeekdayStats extends StatefulWidget {
   WeekdayStatsState createState() => WeekdayStatsState(
       poopsByWeekday, mostPopularDay, weekdayNames, highlightStyle);
 
-  static Map<int, int> groupByDay(List<DateTime> poops) {
+  static Map<int, int> groupByDay(List<Poop> poops) {
     Map<int, int> poopsPerDay = new Map();
     new List<int>.generate(7, (i) {
       poopsPerDay[i] = 0;
       return i + 1;
     });
 
-    poops.forEach((DateTime dt) => poopsPerDay[dt.weekday - 1]++);
+    poops.forEach((Poop poop) => poopsPerDay[poop.dateTime.weekday - 1]++);
     return poopsPerDay;
   }
 

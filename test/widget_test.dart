@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:bajsappen/database_helpers.dart';
+import 'package:bajsappen/poop.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:bajsappen/main.dart';
@@ -13,15 +14,15 @@ import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 
 class FakeDatabase extends Mock implements DatabaseHelper {
-  final List<DateTime> _poops = [];
+  final List<Poop> _poops = [];
 
   @override
-  Future<List<DateTime>> getAllPoops() {
+  Future<List<Poop>> getAllPoops() {
     return Future.value(_poops);
   }
 
   @override
-  Future<int> insert(DateTime poop) {
+  Future<int> insertPoop(Poop poop) {
     _poops.add(poop);
     return Future.value(_poops.length);
   }

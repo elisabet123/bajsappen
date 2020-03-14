@@ -1,25 +1,24 @@
+import 'package:bajsappen/poop.dart';
 import 'package:bajsappen/pooplocalization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 class AllPoopPage extends StatefulWidget {
-
-  final List<DateTime> poops;
-  final Function(DateTime) _deletePoop;
+  final List<Poop> poops;
+  final Function(Poop) _deletePoop;
 
   AllPoopPage(this.poops, this._deletePoop, {Key key}) : super(key: key) {
-    this.poops.sort((a, b) => b.compareTo(a));
+    this.poops.sort((a, b) => b.dateTime.compareTo(a.dateTime));
   }
 
   @override
   State<StatefulWidget> createState() => AllPoopPageState(poops, _deletePoop);
 }
 
-
 class AllPoopPageState extends State<AllPoopPage> {
-  final Function(DateTime) _deletePoop;
-  List<DateTime> poops;
+  final Function(Poop) _deletePoop;
+  List<Poop> poops;
   ScaffoldState scaffold;
 
   AllPoopPageState(this.poops, this._deletePoop);
@@ -45,16 +44,16 @@ class AllPoopPageState extends State<AllPoopPage> {
         });
   }
 
-  onDelete(BuildContext context, DateTime pooptime) {
-    _deletePoop(pooptime).then((_) {
+  onDelete(BuildContext context, Poop poop) {
+    _deletePoop(poop).then((_) {
       // undo?
-      poops.remove(pooptime);
+      poops.remove(poop);
       setState(() {
         poops = poops;
       });
       scaffold.showSnackBar(SnackBar(
           content: Text(
-              '${DateFormat('yyyy-MM-dd HH:mm').format(pooptime)}' +
+              '${DateFormat('yyyy-MM-dd HH:mm').format(poop.dateTime)}' +
                   PoopLocalizations.of(context).get('removed'))));
     });
   }
@@ -62,18 +61,31 @@ class AllPoopPageState extends State<AllPoopPage> {
   @override
   Widget build(BuildContext context) {
     final Iterable<Dismissible> tiles = poops.map(
-          (DateTime pooptime) {
+      (Poop poop) {
         return Dismissible(
-          key: Key(pooptime.millisecondsSinceEpoch.toString()),
-          onDismissed: (direction) => onDelete(context, pooptime),
+          key: Key(poop.dateTime.millisecondsSinceEpoch.toString()),
+          onDismissed: (direction) => onDelete(context, poop),
           child: ListTile(
             title: Text(
-              '${DateFormat('yyyy-MM-dd HH:mm').format(pooptime)}',
+              '${DateFormat('yyyy-MM-dd HH:mm').format(poop.dateTime)}',
             ),
-            onLongPress: () async  {
+            trailing: Container(
+              child: Image(
+                image: poop.hardness != null
+                    ? AssetImage('assets/images/type-' +
+                        poop.hardness.floor().toString() +
+                        '.png')
+                    : AssetImage('assets/images/empty.png'),
+                height: 50,
+              ),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(width: 0)),
+            ),
+            onLongPress: () async {
               var delete = await confirmDelete(context);
               if (delete) {
-                await onDelete(context, pooptime);
+                await onDelete(context, poop);
                 // TODO update the dismissable list
               }
             },

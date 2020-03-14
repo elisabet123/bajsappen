@@ -1,9 +1,11 @@
+import 'package:bajsappen/statistics/constipation.dart';
 import 'package:bajsappen/statistics/count.dart';
 import 'package:bajsappen/statistics/timeofday.dart';
 import 'package:bajsappen/statistics/weekday.dart';
 import 'package:flutter/material.dart';
 
 import '../database_helpers.dart';
+import '../poop.dart';
 
 class StatisticPage extends StatefulWidget {
   StatisticPage({Key key}) : super(key: key);
@@ -21,13 +23,13 @@ class StatisticPageState extends State<StatisticPage> {
     fontWeight: FontWeight.bold,
   );
 
-  void onPoopDeleted(DateTime poop) async {
+  void onPoopDeleted(Poop poop) async {
     await helper.delete(poop);
     await refresh();
   }
 
   refresh() async {
-    List<DateTime> poops = await helper.getAllPoops() ?? [];
+    List<Poop> poops = await helper.getAllPoops() ?? [];
 
     List<Widget> refreshedWidgets = [];
     refreshedWidgets.add(CounterWidget(
@@ -38,6 +40,7 @@ class StatisticPageState extends State<StatisticPage> {
     refreshedWidgets
         .add(WeekdayStats(poops: poops, highlightStyle: highlightStyle));
     refreshedWidgets.add(TimeOfDayStats(poops, highlightStyle: highlightStyle));
+    refreshedWidgets.add(ConstipationStats(poops: poops, highlightStyle: highlightStyle));
     statisticsWidgets = refreshedWidgets;
   }
 

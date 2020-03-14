@@ -1,3 +1,4 @@
+import 'package:bajsappen/poop.dart';
 import 'package:bajsappen/statistics/allpooppage.dart';
 import 'package:bajsappen/statistics/statisticspage.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ class MyHomePage extends StatefulWidget {
 class MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   Widget activeTab;
-  List<DateTime> _poops = [];
+  List<Poop> _poops = [];
   DatabaseHelper helper = DatabaseHelper.instance;
 
   @override
@@ -70,12 +71,12 @@ class MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  _savePoop(DateTime poop) async {
-    await helper.insert(poop);
+  _savePoop(Poop poop) async {
+    await helper.insertPoop(poop);
     await this.read();
   }
 
-  _deletePoop(DateTime poop) async {
+  _deletePoop(Poop poop) async {
     await helper.delete(poop);
     await this.read();
   }

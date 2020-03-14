@@ -1,3 +1,4 @@
+import 'package:bajsappen/poop.dart';
 import 'package:bajsappen/statistics/statisticscard.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,12 +10,12 @@ class CounterWidget extends StatelessWidget {
   final int count;
   final DateTime firstPoop;
   final TextStyle _highlightStyle;
-  final List<DateTime> _poops;
-  final Function(DateTime) _onPoopDeleted;
+  final List<Poop> _poops;
+  final Function(Poop) _onPoopDeleted;
 
   CounterWidget(this._poops, this._highlightStyle, this._onPoopDeleted, {Key key})
       : this.count = _poops.length,
-        this.firstPoop = _poops.isNotEmpty ? _poops.first : DateTime.now(),
+        this.firstPoop = _poops.isNotEmpty ? _poops.first.dateTime : DateTime.now(),
         super(key: key);
 
   @override
