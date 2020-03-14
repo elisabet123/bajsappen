@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 class AllPoopPage extends StatefulWidget {
-
   final List<Poop> poops;
   final Function(Poop) _deletePoop;
 
@@ -16,7 +15,6 @@ class AllPoopPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => AllPoopPageState(poops, _deletePoop);
 }
-
 
 class AllPoopPageState extends State<AllPoopPage> {
   final Function(Poop) _deletePoop;
@@ -63,7 +61,7 @@ class AllPoopPageState extends State<AllPoopPage> {
   @override
   Widget build(BuildContext context) {
     final Iterable<Dismissible> tiles = poops.map(
-          (Poop poop) {
+      (Poop poop) {
         return Dismissible(
           key: Key(poop.dateTime.millisecondsSinceEpoch.toString()),
           onDismissed: (direction) => onDelete(context, poop),
@@ -71,7 +69,20 @@ class AllPoopPageState extends State<AllPoopPage> {
             title: Text(
               '${DateFormat('yyyy-MM-dd HH:mm').format(poop.dateTime)}',
             ),
-            onLongPress: () async  {
+            trailing: Container(
+              child: Image(
+                image: poop.hardness != null
+                    ? AssetImage('assets/images/type-' +
+                        poop.hardness.floor().toString() +
+                        '.png')
+                    : AssetImage('assets/images/empty.png'),
+                height: 50,
+              ),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(width: 0)),
+            ),
+            onLongPress: () async {
               var delete = await confirmDelete(context);
               if (delete) {
                 await onDelete(context, poop);

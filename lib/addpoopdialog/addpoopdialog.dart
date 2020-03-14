@@ -187,9 +187,10 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
                               ],
                             ),
                             SizedBox(height: 10,),
-                            Text(PoopLocalizations.of(context).get('type_' +
+                            Text(
+                                hardnessChanged ? PoopLocalizations.of(context).get('type_' +
                                 hardness.floor().toString() +
-                                '_description'))
+                                '_description') : '')
                           ],
                         )
                       : SizedBox(
@@ -204,7 +205,7 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
                 child: Text(PoopLocalizations.of(context).get('cancel')),
               ),
               FlatButton(
-                  onPressed: () => Navigator.of(context).pop(Poop(_poop, hardness)),
+                  onPressed: () => Navigator.of(context).pop(Poop(_poop, hardnessChanged ? hardness : null)),
                   child: Text(PoopLocalizations.of(context).get('add'))),
             ],
           ),
