@@ -16,6 +16,7 @@ class PoopLocalizations {
     'sv': {
       'title': 'Bajsappen',
       'home': 'Registrera bajs',
+      'poop_input_hardness': 'hårdhet',
       'statistics': 'Statistik',
       'latest_poop': 'Senaste bajset: ',
       'you_have_pooped': 'Du har bajsat ',
@@ -78,8 +79,8 @@ class PoopLocalizations {
 }
 
 
-class DemoLocalizationsDelegate extends LocalizationsDelegate<PoopLocalizations> {
-  const DemoLocalizationsDelegate();
+class BajsLocalizationsDelegate extends LocalizationsDelegate<PoopLocalizations> {
+  const BajsLocalizationsDelegate();
 
   @override
   bool isSupported(Locale locale) => ['sv'].contains(locale.languageCode);
@@ -92,5 +93,5 @@ class DemoLocalizationsDelegate extends LocalizationsDelegate<PoopLocalizations>
   }
 
   @override
-  bool shouldReload(DemoLocalizationsDelegate old) => false;
+  bool shouldReload(BajsLocalizationsDelegate old) => false;
 }

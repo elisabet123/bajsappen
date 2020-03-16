@@ -1,7 +1,7 @@
+import 'package:bajsappen/addpoopdialog/datetimebuttons.dart';
 import 'package:bajsappen/pooplocalization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
 
 import '../poop.dart';
 
@@ -13,7 +13,7 @@ class PoopButtonAddDialog extends StatefulWidget {
 }
 
 class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
-  DateTime _poop = DateTime.now();
+  DateTime _poopDateTime = DateTime.now();
   double hardness = 1;
   bool hardnessChanged = false;
 
@@ -31,13 +31,13 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
   _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: _poop,
-      firstDate: DateTime(_poop.year - 1),
+      initialDate: _poopDateTime,
+      firstDate: DateTime(_poopDateTime.year - 1),
       lastDate: DateTime.now(),
     );
     if (picked != null) {
       setState(() {
-        _poop = setDate(picked, _poop);
+        _poopDateTime = setDate(picked, _poopDateTime);
       });
     }
   }
@@ -45,11 +45,11 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
   _selectTime(BuildContext context) async {
     final TimeOfDay time = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.fromDateTime(_poop),
+      initialTime: TimeOfDay.fromDateTime(_poopDateTime),
     );
 
     setState(() {
-      _poop = setTime(_poop, time);
+      _poopDateTime = setTime(_poopDateTime, time);
     });
   }
 
@@ -76,41 +76,7 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
           SizedBox(
             height: 24,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              FlatButton(
-                padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 10.0),
-                child: Text(
-                  '${DateFormat('yyyy-MM-dd').format(_poop)}',
-                  style: TextStyle(fontSize: 16.0, color: Colors.black54),
-                ),
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: Colors.black54,
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                onPressed: () => _selectDate(context),
-              ),
-              FlatButton(
-                padding: EdgeInsets.fromLTRB(30, 10.0, 30.0, 10.0),
-                child: Text(
-                  '${DateFormat('HH:mm').format(_poop)}',
-                  style: TextStyle(fontSize: 16.0, color: Colors.black54),
-                ),
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: Colors.black54,
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                onPressed: () => _selectTime(context),
-              ),
-            ],
-          ),
+          DateTimeButtons(_poopDateTime, _selectDate, _selectTime),
           Divider(
             thickness: 1,
             height: 50,
@@ -134,7 +100,7 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text('hårdhet'),
+                      Text(PoopLocalizations.of(context).get('poop_input_hardness')),
                       Icon(typeSelectorOpen
                           ? Icons.keyboard_arrow_down
                           : Icons.keyboard_arrow_left),
@@ -205,7 +171,7 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
                 child: Text(PoopLocalizations.of(context).get('cancel')),
               ),
               FlatButton(
-                  onPressed: () => Navigator.of(context).pop(Poop(_poop, hardnessChanged ? hardness : null)),
+                  onPressed: () => Navigator.of(context).pop(Poop(_poopDateTime, hardnessChanged ? hardness : null)),
                   child: Text(PoopLocalizations.of(context).get('add'))),
             ],
           ),

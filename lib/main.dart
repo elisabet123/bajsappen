@@ -18,7 +18,7 @@ class Bajsappen extends StatelessWidget {
       onGenerateTitle: (BuildContext context) =>
           PoopLocalizations.of(context).title,
       localizationsDelegates: [
-        const DemoLocalizationsDelegate(),
+        const BajsLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
