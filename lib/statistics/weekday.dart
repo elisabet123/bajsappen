@@ -47,7 +47,7 @@ class WeekdayStats extends StatefulWidget {
 
     int index = maxBy(dailyStats.entries, (entry) => entry.value).key;
 
-    return weekdayNames[index - 1];
+    return weekdayNames[index];
   }
 }
 

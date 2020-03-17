@@ -123,6 +123,7 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
                                             '.png')
                                         : AssetImage('assets/images/empty.png'),
                                     height: 50,
+                                    width: 50,
                                   ),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),

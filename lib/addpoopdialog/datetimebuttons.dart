@@ -49,7 +49,6 @@ class DateTimeButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          print(constraints.maxWidth);
       if (constraints.maxWidth > 240.0) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
