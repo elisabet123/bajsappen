@@ -17,7 +17,7 @@ class FakeDatabase extends Mock implements DatabaseHelper {
   final List<Poop> _poops = [];
 
   @override
-  Future<List<Poop>> getAllPoops() {
+  Future<List<Poop>> getAllPoops([int sinceEpoch = 0]) {
     return Future.value(_poops);
   }
 

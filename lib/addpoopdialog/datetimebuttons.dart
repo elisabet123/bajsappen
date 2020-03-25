@@ -23,7 +23,7 @@ class DateTimeButtons extends StatelessWidget {
           color: Colors.black54,
           width: 1,
         ),
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(8),
       ),
       onPressed: _onPressed,
     );
@@ -32,40 +32,29 @@ class DateTimeButtons extends StatelessWidget {
   FlatButton _dateButton(BuildContext context) {
     return _button(
       '${DateFormat('yyyy-MM-dd').format(_poop)}',
-      EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
+      EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
       () => _selectDate(context),
     );
   }
 
-  FlatButton _timeButton(BuildContext context, double sidePadding) {
+  FlatButton _timeButton(BuildContext context) {
     return _button(
       '${DateFormat('HH:mm').format(_poop)}',
-      EdgeInsets.only(left: sidePadding, right: sidePadding, top: 10, bottom: 10),
+      EdgeInsets.only(left: 31, right: 31, top: 10, bottom: 10),
       () => _selectTime(context),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-      if (constraints.maxWidth > 240.0) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            _dateButton(context),
-            _timeButton(context, 30),
-          ],
-        );
-      } else {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            _dateButton(context),
-            _timeButton(context, 51),
-          ],
-        );
-      }
-    });
+    return ButtonBar(
+      alignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      layoutBehavior: ButtonBarLayoutBehavior.constrained,
+      children: <Widget>[
+        _dateButton(context),
+        _timeButton(context),
+      ],
+    );
   }
 }

@@ -78,17 +78,19 @@ class DatabaseHelper {
     return id > 0;
   }
 
-  Future<List<Poop>> getAllPoops() async {
+  Future<List<Poop>> getAllPoops([int sinceEpoch = 0]) async {
     Database db = await database;
-    List<Map> maps = await db.query(tableName, orderBy: columnEpoch);
-    if (maps.length > 0) {
-      List<Poop> resultList = [];
-      maps.forEach((element) => resultList.add(Poop(
-            DateTime.fromMillisecondsSinceEpoch(element[columnEpoch]),
-            element[columnHardness],
-          )));
-      return resultList;
-    }
-    return null;
+
+    List<Map> maps = await db.query(
+      tableName,
+      orderBy: columnEpoch,
+      where: '$columnEpoch > $sinceEpoch',
+    );
+    return List.generate(maps.length, (i) {
+      return Poop(
+        DateTime.fromMillisecondsSinceEpoch(maps[i][columnEpoch]),
+        maps[i][columnHardness],
+      );
+    });
   }
 }

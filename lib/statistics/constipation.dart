@@ -1,7 +1,6 @@
 import 'package:bajsappen/poop.dart';
 import 'package:bajsappen/statistics/statisticscard.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 import '../pooplocalization.dart';
