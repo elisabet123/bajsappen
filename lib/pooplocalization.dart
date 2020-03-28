@@ -66,6 +66,9 @@ class PoopLocalizations {
       'constipation_grade_0': 'hård',
       'constipation_grade_1': 'normal',
       'constipation_grade_2': 'lös',
+      'statistics_date_range_0': 'senaste veckan',
+      'statistics_date_range_1': 'senaste månaden',
+      'statistics_date_range_2': 'alltid',
     },
   };
 

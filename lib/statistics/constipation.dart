@@ -5,17 +5,23 @@ import 'package:flutter/material.dart';
 
 import '../pooplocalization.dart';
 
-class ConstipationStats extends StatefulWidget {
+class ConstipationStats extends StatelessWidget {
   final Map<int, int> poopsByType;
   final TextStyle highlightStyle;
+  int constipationGrade;
 
-  ConstipationStats({Key key, List<Poop> poops, this.highlightStyle})
-      : this.poopsByType = groupByType(poops),
-        super(key: key);
-
-  @override
-  ConstipationStatsState createState() =>
-      ConstipationStatsState(poopsByType, highlightStyle);
+  ConstipationStats(List<Poop> poops, {this.highlightStyle})
+      : this.poopsByType = groupByType(poops) {
+    int constipatedPoops = poopsByType[0] + poopsByType[1];
+    int normalPoops = poopsByType[2] + poopsByType[3];
+    int diarrhoeaPoops = poopsByType[4] + poopsByType[5] + poopsByType[6];
+    constipationGrade =
+        constipatedPoops > normalPoops && constipatedPoops > diarrhoeaPoops
+            ? 0
+            : normalPoops > constipatedPoops && normalPoops > diarrhoeaPoops
+                ? 1
+                : 2;
+  }
 
   static Map<int, int> groupByType(List<Poop> poops) {
     Map<int, int> poopsPerType = new Map();
@@ -31,26 +37,30 @@ class ConstipationStats extends StatefulWidget {
     });
     return poopsPerType;
   }
-}
 
-class ConstipationStatsState extends State<ConstipationStats> {
-  final Map<int, int> poopsByType;
-  int constipationGrade;
-  final TextStyle highlightStyle;
-
-  ConstipationStatsState(this.poopsByType, this.highlightStyle) {
-    int constipatedPoops = poopsByType[0] + poopsByType[1];
-    int normalPoops = poopsByType[2] + poopsByType[3];
-    int diarrhoeaPoops = poopsByType[4] + poopsByType[5] + poopsByType[6];
-    constipationGrade =
-        constipatedPoops > normalPoops && constipatedPoops > diarrhoeaPoops
-            ? 0
-            : normalPoops > constipatedPoops && normalPoops > diarrhoeaPoops
-                ? 1
-                : 2;
+  @override
+  Widget build(BuildContext context) {
+    if (poopsByType.values.every((value) => value == 0)) {
+      return SizedBox(
+        height: 0,
+      );
+    }
+    return Center(
+        child: StatisticsCard(
+      children: [
+        Text(PoopLocalizations.of(context).get('constipation_text_1')),
+        Text(
+          PoopLocalizations.of(context)
+              .get('constipation_grade_' + constipationGrade.toString()),
+          style: highlightStyle,
+        ),
+        Text(PoopLocalizations.of(context).get('constipation_text_2')),
+      ],
+      onTap: () => _showDetails(context),
+    ));
   }
 
-  void _showDetails() {
+  void _showDetails(BuildContext context) {
     List<StoolTypeSeries> data = List();
     poopsByType.forEach((key, value) => data.add(StoolTypeSeries(
           type: key.toString(),
@@ -102,28 +112,6 @@ class ConstipationStatsState extends State<ConstipationStats> {
         },
       ),
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (poopsByType.values.every((value) => value == 0)) {
-      return SizedBox(
-        height: 0,
-      );
-    }
-    return Center(
-        child: StatisticsCard(
-      children: [
-        Text(PoopLocalizations.of(context).get('constipation_text_1')),
-        Text(
-          PoopLocalizations.of(context)
-              .get('constipation_grade_' + constipationGrade.toString()),
-          style: highlightStyle,
-        ),
-        Text(PoopLocalizations.of(context).get('constipation_text_2')),
-      ],
-      onTap: _showDetails,
-    ));
   }
 }
 

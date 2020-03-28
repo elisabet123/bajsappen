@@ -6,22 +6,11 @@ import 'package:flutter/material.dart';
 
 import '../pooplocalization.dart';
 
-class TimeOfDayStats extends StatefulWidget {
+class TimeOfDayStats extends StatelessWidget {
   final TextStyle highlightStyle;
-  final List<Poop> poops;
-
-  TimeOfDayStats(this.poops, {Key key, this.highlightStyle});
-
-  @override
-  TimeOfDayStatsState createState() =>
-      TimeOfDayStatsState(poops, highlightStyle);
-}
-
-class TimeOfDayStatsState extends State<TimeOfDayStats> {
   final List<Poop> poops;
   final Map<int, int> poopsPerHour;
   final Map<int, int> poopsPerTimeOfDay;
-  final TextStyle highlightStyle;
   final List<String> timeOfDayStrings = [
     'night',
     'morning',
@@ -29,7 +18,7 @@ class TimeOfDayStatsState extends State<TimeOfDayStats> {
     'evening'
   ];
 
-  TimeOfDayStatsState(this.poops, this.highlightStyle)
+  TimeOfDayStats(this.poops, {Key key, this.highlightStyle})
       : this.poopsPerHour = _groupByHour(poops),
         this.poopsPerTimeOfDay = new Map() {
     _groupByTimeOfDay();
@@ -61,7 +50,34 @@ class TimeOfDayStatsState extends State<TimeOfDayStats> {
         .reduce((value, element) => value + element);
   }
 
-  void _showDetails() {
+  @override
+  Widget build(BuildContext context) {
+    if (poops.isEmpty) {
+      return SizedBox(
+        height: 0,
+      );
+    }
+    String popularTime = poopsPerTimeOfDay.values.every((poops) => poops == 0)
+        ? ''
+        : PoopLocalizations.of(context).get('the_' +
+                timeOfDayStrings[
+                    maxBy(poopsPerTimeOfDay.entries, (entry) => entry.value)
+                        .key]) ??
+            '';
+    return Center(
+        child: StatisticsCard(
+      children: [
+        Text(PoopLocalizations.of(context).get('popular_pooptime')),
+        Text(
+          popularTime,
+          style: highlightStyle,
+        )
+      ],
+      onTap: () => _showDetails(context),
+    ));
+  }
+
+  void _showDetails(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (BuildContext context) {
@@ -69,25 +85,6 @@ class TimeOfDayStatsState extends State<TimeOfDayStats> {
         },
       ),
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: StatisticsCard(
-      children: [
-        Text(PoopLocalizations.of(context).get('popular_pooptime')),
-        Text(
-          PoopLocalizations.of(context).get('the_' +
-                  timeOfDayStrings[
-                      maxBy(poopsPerTimeOfDay.entries, (entry) => entry.value)
-                          .key]) ??
-              '',
-          style: highlightStyle,
-        )
-      ],
-      onTap: _showDetails,
-    ));
   }
 }
 

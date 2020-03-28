@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../pooplocalization.dart';
 
-class WeekdayStats extends StatefulWidget {
+class WeekdayStats extends StatelessWidget {
   final Map<int, int> poopsByWeekday;
   final String mostPopularDay;
   final TextStyle highlightStyle;
@@ -20,14 +20,9 @@ class WeekdayStats extends StatefulWidget {
     'sunday'
   ];
 
-  WeekdayStats({Key key, List<Poop> poops, this.highlightStyle})
+  WeekdayStats(List<Poop> poops, {this.highlightStyle})
       : this.poopsByWeekday = groupByDay(poops),
-        this.mostPopularDay = getMostPopularDay(groupByDay(poops)),
-        super(key: key);
-
-  @override
-  WeekdayStatsState createState() => WeekdayStatsState(
-      poopsByWeekday, mostPopularDay, weekdayNames, highlightStyle);
+        this.mostPopularDay = getMostPopularDay(groupByDay(poops));
 
   static Map<int, int> groupByDay(List<Poop> poops) {
     Map<int, int> poopsPerDay = new Map();
@@ -41,7 +36,7 @@ class WeekdayStats extends StatefulWidget {
   }
 
   static String getMostPopularDay(Map<int, int> dailyStats) {
-    if (dailyStats.isEmpty) {
+    if (dailyStats.values.every((element) => element == 0)) {
       return '';
     }
 
@@ -49,18 +44,28 @@ class WeekdayStats extends StatefulWidget {
 
     return weekdayNames[index];
   }
-}
 
-class WeekdayStatsState extends State<WeekdayStats> {
-  final Map<int, int> poopsByWeekday;
-  final String mostPopularDay;
-  final List<String> weekdayNames;
-  final TextStyle highlightStyle;
+  @override
+  Widget build(BuildContext context) {
+    if (poopsByWeekday.values.every((value) => value == 0)) {
+      return SizedBox(
+        height: 0,
+      );
+    }
+    return Center(
+        child: StatisticsCard(
+          children: [
+            Text(PoopLocalizations.of(context).get('popular_poopday')),
+            Text(
+              PoopLocalizations.of(context).get(mostPopularDay) ?? '',
+              style: highlightStyle,
+            )
+          ],
+          onTap: () =>_showDetails(context),
+        ));
+  }
 
-  WeekdayStatsState(this.poopsByWeekday, this.mostPopularDay, this.weekdayNames,
-      this.highlightStyle);
-
-  void _showDetails() {
+  void _showDetails(BuildContext context) {
     List<WeekdaySeries> data = List();
     poopsByWeekday.forEach((key, value) => data.add(WeekdaySeries(
           weekday: PoopLocalizations.of(context).get(weekdayNames[key]).substring(0,3),
@@ -112,20 +117,6 @@ class WeekdayStatsState extends State<WeekdayStats> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: StatisticsCard(
-      children: [
-        Text(PoopLocalizations.of(context).get('popular_poopday')),
-        Text(
-          PoopLocalizations.of(context).get(mostPopularDay) ?? '',
-          style: highlightStyle,
-        )
-      ],
-      onTap: _showDetails,
-    ));
-  }
 }
 
 class WeekdaySeries {

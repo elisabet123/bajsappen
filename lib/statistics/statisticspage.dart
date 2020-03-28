@@ -1,3 +1,4 @@
+import 'package:bajsappen/pooplocalization.dart';
 import 'package:bajsappen/statistics/constipation.dart';
 import 'package:bajsappen/statistics/count.dart';
 import 'package:bajsappen/statistics/timeofday.dart';
@@ -18,7 +19,7 @@ class StatisticPageState extends State<StatisticPage> {
   List<Widget> statisticsWidgets = [];
   DatabaseHelper helper = DatabaseHelper.instance;
 
-  final List<bool> selectedDateRange = [true, false, false];
+  final List<bool> selectedDateRange = [true, false, false, false];
 
   final TextStyle highlightStyle = TextStyle(
     color: Colors.deepOrange,
@@ -47,11 +48,10 @@ class StatisticPageState extends State<StatisticPage> {
       highlightStyle,
       onPoopDeleted,
     ));
-    refreshedWidgets
-        .add(WeekdayStats(poops: poops, highlightStyle: highlightStyle));
+    refreshedWidgets.add(WeekdayStats(poops, highlightStyle: highlightStyle));
     refreshedWidgets.add(TimeOfDayStats(poops, highlightStyle: highlightStyle));
     refreshedWidgets
-        .add(ConstipationStats(poops: poops, highlightStyle: highlightStyle));
+        .add(ConstipationStats(poops, highlightStyle: highlightStyle));
     statisticsWidgets = refreshedWidgets;
   }
 
@@ -73,38 +73,37 @@ class StatisticPageState extends State<StatisticPage> {
     });
   }
 
+  List<Widget> _getTimeRangeButtons(BuildContext context) {
+    return List.generate(3, (index) {
+      return FlatButton(
+        child: Text(PoopLocalizations.of(context)
+            .get("statistics_date_range_" + index.toString())),
+        color: selectedDateRange[index] ? Colors.blueAccent : Colors.white,
+        padding: EdgeInsets.all(7),
+        shape: Border(),
+        onPressed: () => _setDateRange(index),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         Card(
           elevation: 4,
-          margin: EdgeInsets.all(8),
-          child: ButtonBar(
-            alignment: MainAxisAlignment.center,
-            buttonPadding: EdgeInsets.all(0),
-            mainAxisSize: MainAxisSize.min,
-            buttonHeight: 47,
-            children: <Widget>[
-              FlatButton(
-                child: Text("Senaste veckan"),
-                color: selectedDateRange[0] ? Colors.blueAccent : Colors.white,
-                padding: EdgeInsets.all(8),
-                onPressed: () => _setDateRange(0),
-              ),
-              FlatButton(
-                child: Text("Senaste månaden"),
-                color: selectedDateRange[1] ? Colors.blueAccent : Colors.white,
-                padding: EdgeInsets.all(8),
-                onPressed: () => _setDateRange(1),
-              ),
-              FlatButton(
-                child: Text("All data"),
-                color: selectedDateRange[2] ? Colors.blueAccent : Colors.white,
-                padding: EdgeInsets.all(8),
-                onPressed: () => _setDateRange(2),
-              ),
-            ],
+          margin: EdgeInsets.only(left: 8, top: 16, right: 8, bottom: 4),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: ButtonBar(
+              alignment: MainAxisAlignment.center,
+              buttonPadding: EdgeInsets.all(0),
+              mainAxisSize: MainAxisSize.min,
+              buttonHeight: 48,
+              children: _getTimeRangeButtons(context),
+            ),
           ),
         ),
         Expanded(
