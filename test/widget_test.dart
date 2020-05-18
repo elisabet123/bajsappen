@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:bajsappen/database_helpers.dart';
+import 'package:bajsappen/ididitpage.dart';
 import 'package:bajsappen/poop.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -35,7 +36,7 @@ void main() {
 
     MyHomePageState homepageState = tester.state(find.byType(MyHomePage));
     homepageState.helper = fakeDatabase;
-    homepageState.read();
+    homepageState.refresh();
 
     await tester.pump();
 
@@ -53,7 +54,7 @@ void main() {
 
     MyHomePageState homepageState = tester.state(find.byType(MyHomePage));
     homepageState.helper = fakeDatabase;
-    homepageState.read();
+    homepageState.refresh();
 
     await tester.pump();
 

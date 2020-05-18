@@ -7,9 +7,7 @@ import '../poop.dart';
 
 class PoopButtonAddDialog extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return PoopButtonAddDialogState();
-  }
+  PoopButtonAddDialogState createState() => PoopButtonAddDialogState();
 }
 
 class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {

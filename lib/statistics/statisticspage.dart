@@ -9,8 +9,6 @@ import '../database_helpers.dart';
 import '../poop.dart';
 
 class StatisticPage extends StatefulWidget {
-  StatisticPage({Key key}) : super(key: key);
-
   @override
   StatisticPageState createState() => StatisticPageState();
 }

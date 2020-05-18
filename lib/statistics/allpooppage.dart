@@ -8,12 +8,10 @@ class AllPoopPage extends StatefulWidget {
   final List<Poop> poops;
   final Function(Poop) _deletePoop;
 
-  AllPoopPage(this.poops, this._deletePoop, {Key key}) : super(key: key) {
-    this.poops.sort((a, b) => b.dateTime.compareTo(a.dateTime));
-  }
+  AllPoopPage(this.poops, this._deletePoop, {Key key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => AllPoopPageState(poops, _deletePoop);
+  AllPoopPageState createState() => AllPoopPageState(poops, _deletePoop);
 }
 
 class AllPoopPageState extends State<AllPoopPage> {
@@ -86,7 +84,6 @@ class AllPoopPageState extends State<AllPoopPage> {
               var delete = await confirmDelete(context);
               if (delete) {
                 await onDelete(context, poop);
-                // TODO update the dismissable list
               }
             },
           ),

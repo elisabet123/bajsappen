@@ -9,9 +9,7 @@ class PoopButton extends StatefulWidget {
   PoopButton(this.onPressed) : super();
 
   @override
-  State<StatefulWidget> createState() {
-    return PoopButtonState(onPressed);
-  }
+  PoopButtonState createState() => PoopButtonState(onPressed);
 }
 
 class PoopButtonState extends State<PoopButton> {
