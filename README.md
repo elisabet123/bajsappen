@@ -7,7 +7,7 @@ flutter pub pub run flutter_launcher_icons:main
 ```
 
 ## release procedure
-1. change version number ina ndroid/app/build.gradle and pubspec.yaml
+1. change version number in android/app/build.gradle and pubspec.yaml
 1. commit & push
 1. run `flutter build appbundle`
 1. create release in github web UI
