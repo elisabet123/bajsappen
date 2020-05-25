@@ -37,14 +37,14 @@ class TimeOfDayStats extends StatelessWidget {
 
   _groupByTimeOfDay() {
     new List<int>.generate(4, (i) {
-      poopsPerTimeOfDay[i] = _getMaxMin(poopsPerHour, 6 * i, 6 * (i + 1));
+      poopsPerTimeOfDay[i] = _countPoopsWithinHours(poopsPerHour, 6 * i, 6 * (i + 1));
       return i + 1;
     });
   }
 
-  int _getMaxMin(Map<int, int> input, int minHour, int maxHour) {
+  int _countPoopsWithinHours(Map<int, int> input, int minHour, int maxHour) {
     return input.entries
-        .where((entry) => entry.key < maxHour && entry.key > minHour)
+        .where((entry) => entry.key < maxHour && entry.key >= minHour)
         .toList()
         .map((MapEntry entry) => entry.value)
         .reduce((value, element) => value + element);
@@ -81,14 +81,19 @@ class TimeOfDayStats extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (BuildContext context) {
-          return ChartPage(poopsPerHour, poopsPerTimeOfDay, timeOfDayStrings);
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(PoopLocalizations.of(context).get('time_statistics')),
+            ),
+            body: ChartPage(poopsPerHour, poopsPerTimeOfDay, timeOfDayStrings),
+          );
         },
       ),
     );
   }
 }
 
-class ChartPage extends StatefulWidget {
+class ChartPage extends StatelessWidget {
   final Map<int, int> poopsPerHour;
   final Map<int, int> poopsPerTimeOfDay;
   final List<String> timeOfDayStrings;
@@ -97,20 +102,6 @@ class ChartPage extends StatefulWidget {
       this.poopsPerHour, this.poopsPerTimeOfDay, this.timeOfDayStrings,
       {Key key})
       : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() {
-    return ChartPageState(poopsPerHour, poopsPerTimeOfDay, timeOfDayStrings);
-  }
-}
-
-class ChartPageState extends State<ChartPage> {
-  final Map<int, int> poopsPerHour;
-  final Map<int, int> poopsPerTimeOfDay;
-  final List<String> timeOfDayStrings;
-
-  ChartPageState(
-      this.poopsPerHour, this.poopsPerTimeOfDay, this.timeOfDayStrings);
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +134,8 @@ class ChartPageState extends State<ChartPage> {
               ),
             ),
           ),
-        ));
+        ),
+        context);
 
     List<charts.Series<MapEntry<int, int>, String>> timeOfDaySeries = [
       charts.Series(
@@ -156,19 +148,14 @@ class ChartPageState extends State<ChartPage> {
     ];
 
     Widget timeOfDayChart = createChart('poops_per_time_of_day',
-        charts.BarChart(timeOfDaySeries, animate: true));
+        charts.BarChart(timeOfDaySeries, animate: true), context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(PoopLocalizations.of(context).get('time_statistics')),
-      ),
-      body: ListView(
+    return ListView(
         children: <Widget>[hourChart, timeOfDayChart],
-      ),
-    );
+      );
   }
 
-  Widget createChart(String titleKey, Widget chart) {
+  Widget createChart(String titleKey, Widget chart, BuildContext context) {
     return Container(
       height: 200,
       padding: EdgeInsets.all(20),
