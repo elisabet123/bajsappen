@@ -5,23 +5,19 @@ import 'package:intl/intl.dart';
 import '../database_helpers.dart';
 import '../poop.dart';
 import '../pooplocalization.dart';
+import '../pooppagestate.dart';
 
 class CalendarPage extends StatefulWidget {
   @override
   CalendarPageState createState() => CalendarPageState();
 }
 
-class CalendarPageState extends State<CalendarPage> {
+class CalendarPageState extends PoopPageState {
   Map<DateTime, List> _events = {};
   List _selectedEvents = [];
   DateTime _selectedDateTime = DateTime.now();
 
   CalendarController _calendarController;
-  DatabaseHelper helper = DatabaseHelper.instance;
-
-  CalendarPageState() {
-    refresh();
-  }
 
   @override
   void initState() {
@@ -35,8 +31,9 @@ class CalendarPageState extends State<CalendarPage> {
     super.dispose();
   }
 
+  @override
   refresh() {
-    helper.getAllPoops().then((poops) {
+    super.getAllPoops().then((poops) {
       _events = {};
       setState(() {
         poops.forEach((poop) {
@@ -53,17 +50,6 @@ class CalendarPageState extends State<CalendarPage> {
         _selectedEvents = _events[selectedDay] ?? [];
       });
     });
-  }
-
-  @override
-  void didUpdateWidget(CalendarPage oldVariant) {
-    refresh();
-    super.didUpdateWidget(oldVariant);
-  }
-
-  void deletePoop(Poop poop) async {
-    await helper.delete(poop);
-    await refresh();
   }
 
   void _onDaySelected(DateTime day, List events) {

@@ -8,6 +8,7 @@
 import 'package:bajsappen/database_helpers.dart';
 import 'package:bajsappen/ididitpage.dart';
 import 'package:bajsappen/poop.dart';
+import 'package:bajsappen/pooppagestate.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:bajsappen/main.dart';
@@ -34,9 +35,9 @@ void main() {
     FakeDatabase fakeDatabase = FakeDatabase();
     await tester.pumpWidget(Bajsappen());
 
-    IDidItPageState iDidItPageState = tester.state(find.byType(IDidItPage));
-    iDidItPageState.helper = fakeDatabase;
-    iDidItPageState.refresh();
+    PoopPageState poopPageState = tester.state(find.byType(IDidItPage));
+    poopPageState.setHelper(fakeDatabase);
+    poopPageState.refresh();
 
     await tester.pump();
 
@@ -52,9 +53,9 @@ void main() {
     FakeDatabase fakeDatabase = FakeDatabase();
     await tester.pumpWidget(Bajsappen());
 
-    IDidItPageState iDidItPageState = tester.state(find.byType(IDidItPage));
-    iDidItPageState.helper = fakeDatabase;
-    iDidItPageState.refresh();
+    PoopPageState poopPageState = tester.state(find.byType(IDidItPage));
+    poopPageState.setHelper(fakeDatabase);
+    poopPageState.refresh();
 
     await tester.pump();
 

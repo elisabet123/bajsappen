@@ -1,6 +1,7 @@
 import 'package:bajsappen/poop.dart';
 import 'package:bajsappen/poopbutton.dart';
 import 'package:bajsappen/pooplocalization.dart';
+import 'package:bajsappen/pooppagestate.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -13,30 +14,15 @@ class IDidItPage extends StatefulWidget {
   }
 }
 
-class IDidItPageState extends State<IDidItPage> {
+class IDidItPageState extends PoopPageState {
   Poop _lastPoop;
-  DatabaseHelper helper = DatabaseHelper.instance;
-
-  IDidItPageState() {
-    refresh();
-  }
 
   @override
-  void didUpdateWidget(IDidItPage oldVariant) {
-    refresh();
-    super.didUpdateWidget(oldVariant);
-  }
-
   refresh() async {
-    var poops = await helper.getAllPoops();
+    var poops = await super.getAllPoops();
     setState(() {
       _lastPoop = poops.isNotEmpty ? poops.first : null;
     });
-  }
-
-  void addPoop(Poop poop) {
-    helper.insertPoop(poop);
-    refresh();
   }
 
   @override

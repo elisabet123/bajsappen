@@ -1,4 +1,5 @@
 import 'package:bajsappen/pooplocalization.dart';
+import 'package:bajsappen/pooppagestate.dart';
 import 'package:bajsappen/statistics/constipation.dart';
 import 'package:bajsappen/statistics/count.dart';
 import 'package:bajsappen/statistics/timeofday.dart';
@@ -13,9 +14,8 @@ class StatisticPage extends StatefulWidget {
   StatisticPageState createState() => StatisticPageState();
 }
 
-class StatisticPageState extends State<StatisticPage> {
+class StatisticPageState extends PoopPageState {
   List<Widget> statisticsWidgets = [];
-  DatabaseHelper helper = DatabaseHelper.instance;
 
   final List<bool> selectedDateRange = [true, false, false, false];
 
@@ -26,23 +26,13 @@ class StatisticPageState extends State<StatisticPage> {
   );
 
   @override
-  void didUpdateWidget(StatisticPage oldVariant) {
-    refresh();
-    super.didUpdateWidget(oldVariant);
-  }
-
-  void onPoopDeleted(Poop poop) async {
-    await helper.delete(poop);
-    await refresh();
-  }
-
   refresh() async {
     Duration refreshSince = selectedDateRange[0]
         ? Duration(days: 7)
         : selectedDateRange[1]
             ? Duration(days: 31)
             : Duration(days: 365 * 10); // there is no maxint
-    List<Poop> poops = await helper.getAllPoops(
+    List<Poop> poops = await super.getAllPoops(
             DateTime.now().subtract(refreshSince).millisecondsSinceEpoch) ??
         [];
 
@@ -50,7 +40,7 @@ class StatisticPageState extends State<StatisticPage> {
     refreshedWidgets.add(CounterWidget(
       poops,
       highlightStyle,
-      onPoopDeleted,
+      super.deletePoop,
     ));
     refreshedWidgets.add(WeekdayStats(poops, highlightStyle: highlightStyle));
     refreshedWidgets.add(TimeOfDayStats(poops, highlightStyle: highlightStyle));
@@ -61,22 +51,10 @@ class StatisticPageState extends State<StatisticPage> {
     });
   }
 
-  StatisticPageState() {
-    refresh().then((poops) {
-      setState(() {
-        statisticsWidgets = statisticsWidgets;
-      });
-    });
-  }
-
   _setDateRange(int selectedRange) {
     selectedDateRange.fillRange(0, 3, false);
     selectedDateRange[selectedRange] = true;
-    refresh().then((poops) {
-      setState(() {
-        statisticsWidgets = statisticsWidgets;
-      });
-    });
+    refresh();
   }
 
   List<Widget> _getTimeRangeButtons(BuildContext context) {

@@ -1,5 +1,6 @@
 import 'package:bajsappen/poop.dart';
 import 'package:bajsappen/pooplocalization.dart';
+import 'package:bajsappen/pooppagestate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -15,18 +16,15 @@ class AllPoopPage extends StatefulWidget {
   AllPoopPageState createState() => AllPoopPageState(cutoffTime);
 }
 
-class AllPoopPageState extends State<AllPoopPage> {
+class AllPoopPageState extends PoopPageState {
   final int cutoffTime;
   List<Poop> _poops = [];
   ScaffoldState scaffold;
-  DatabaseHelper helper = DatabaseHelper.instance;
 
-  AllPoopPageState(this.cutoffTime) {
-    refresh();
-  }
+  AllPoopPageState(this.cutoffTime) : super();
 
   void refresh() async {
-    var poops = await helper.getAllPoops(cutoffTime);
+    var poops = await super.getAllPoops(cutoffTime);
     setState(() {
       _poops = poops;
     });
@@ -54,8 +52,7 @@ class AllPoopPageState extends State<AllPoopPage> {
   }
 
   onDelete(BuildContext context, Poop poop) async {
-    await helper.delete(poop);
-    refresh();
+    super.deletePoop(poop);
     scaffold.showSnackBar(SnackBar(
         content: Text(
             '${DateFormat('yyyy-MM-dd HH:mm').format(poop.dateTime)}' +
