@@ -15,7 +15,7 @@ class CounterWidget extends StatelessWidget {
 
   CounterWidget(this._poops, this._highlightStyle, this._onPoopDeleted, {Key key})
       : this.count = _poops.length,
-        this.firstPoop = _poops.isNotEmpty ? _poops.first.dateTime : DateTime.now(),
+        this.firstPoop = _poops.isNotEmpty ? _poops.last.dateTime : DateTime.now(),
         super(key: key);
 
   @override
@@ -31,7 +31,7 @@ class CounterWidget extends StatelessWidget {
           Text(PoopLocalizations.of(context).get('times_since')),
           Text('${DateFormat('yyyy-MM-dd').format(firstPoop)}'),
         ],
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllPoopPage(_poops, _onPoopDeleted))),
+        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllPoopWidget(_poops, _onPoopDeleted))),
       ),
     );
   }

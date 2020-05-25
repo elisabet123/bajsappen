@@ -83,7 +83,7 @@ class DatabaseHelper {
 
     List<Map> maps = await db.query(
       tableName,
-      orderBy: columnEpoch,
+      orderBy: '$columnEpoch DESC',
       where: '$columnEpoch > $sinceEpoch',
     );
     return List.generate(maps.length, (i) {

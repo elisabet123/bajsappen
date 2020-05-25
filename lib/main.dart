@@ -1,3 +1,4 @@
+import 'package:bajsappen/calendar/calendarpage.dart';
 import 'package:bajsappen/poop.dart';
 import 'package:bajsappen/statistics/allpooppage.dart';
 import 'package:bajsappen/statistics/statisticspage.dart';
@@ -42,65 +43,45 @@ class MyHomePage extends StatefulWidget {
 class MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   Widget activeTab;
-  List<Poop> _poops = [];
-  DatabaseHelper helper = DatabaseHelper.instance;
 
   @override
   void initState() {
     super.initState();
 
-    read();
+    refresh();
   }
 
-  read() async {
-    var poops = await helper.getAllPoops() ?? [];
-
+  refresh() async {
     setState(() {
-      _poops = poops;
-      switch (_selectedIndex) {
-        case 1:
-          activeTab = StatisticPage();
-          break;
-        default:
-          activeTab = IDidItPage(
-            poops != null && poops.isNotEmpty ? poops.last : null,
-            _savePoop,
-          );
-          break;
-      }
+      activeTab = getCurrentTab();
     });
   }
 
-  _savePoop(Poop poop) async {
-    await helper.insertPoop(poop);
-    await this.read();
-  }
-
-  _deletePoop(Poop poop) async {
-    await helper.delete(poop);
-    await this.read();
+  Widget getCurrentTab() {
+    switch (_selectedIndex) {
+      case 1:
+        return StatisticPage();
+        break;
+      case 2:
+        return CalendarPage();
+        break;
+      default:
+        return IDidItPage();
+        break;
+    }
   }
 
   void _onNavItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      switch (_selectedIndex) {
-        case 1:
-          activeTab = StatisticPage();
-          break;
-        default:
-          activeTab = IDidItPage(
-            _poops.isNotEmpty ? _poops.last : null,
-            _savePoop,
-          );
-          break;
-      }
+      activeTab = getCurrentTab();
     });
   }
 
-  void _showList() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => AllPoopPage(_poops, _deletePoop)));
+  void _showList() async {
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => AllPoopPage(0)));
+    refresh();
   }
 
   @override
@@ -109,7 +90,6 @@ class MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(PoopLocalizations.of(context).title),
         actions: <Widget>[
-          // Add 3 lines from here...
           IconButton(icon: Icon(Icons.list), onPressed: _showList),
         ],
       ),
@@ -123,6 +103,10 @@ class MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.show_chart),
             title: Text(PoopLocalizations.of(context).get('statistics')),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            title: Text(PoopLocalizations.of(context).get('calendar')),
           ),
         ],
         currentIndex: _selectedIndex,

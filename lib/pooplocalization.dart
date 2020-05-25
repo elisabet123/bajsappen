@@ -18,6 +18,7 @@ class PoopLocalizations {
       'home': 'Registrera bajs',
       'poop_input_hardness': 'hårdhet',
       'statistics': 'Statistik',
+      'calendar': 'Historik',
       'latest_poop': 'Senaste bajset: ',
       'you_have_pooped': 'Du har bajsat ',
       'times_since': ' gånger sedan ',
