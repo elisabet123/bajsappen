@@ -43,8 +43,6 @@ class MyHomePage extends StatefulWidget {
 class MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   Widget activeTab;
-  List<Poop> _poops = [];
-  DatabaseHelper helper = DatabaseHelper.instance;
 
   @override
   void initState() {
@@ -54,22 +52,9 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   refresh() async {
-    var poops = await helper.getAllPoops() ?? [];
-
     setState(() {
-      _poops = poops;
       activeTab = getCurrentTab();
     });
-  }
-
-  _savePoop(Poop poop) async {
-    await helper.insertPoop(poop);
-    await this.refresh();
-  }
-
-  _deletePoop(Poop poop) async {
-    await helper.delete(poop);
-    await this.refresh();
   }
 
   Widget getCurrentTab() {
@@ -81,7 +66,7 @@ class MyHomePageState extends State<MyHomePage> {
         return CalendarPage();
         break;
       default:
-        return IDidItPage(_poops.isNotEmpty ? _poops.first : null, _savePoop);
+        return IDidItPage();
         break;
     }
   }
@@ -93,9 +78,10 @@ class MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _showList() {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AllPoopPage(_poops, _deletePoop)));
+  void _showList() async {
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => AllPoopPage(0)));
+    refresh();
   }
 
   @override

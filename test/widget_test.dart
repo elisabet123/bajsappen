@@ -34,9 +34,9 @@ void main() {
     FakeDatabase fakeDatabase = FakeDatabase();
     await tester.pumpWidget(Bajsappen());
 
-    MyHomePageState homepageState = tester.state(find.byType(MyHomePage));
-    homepageState.helper = fakeDatabase;
-    homepageState.refresh();
+    IDidItPageState iDidItPageState = tester.state(find.byType(IDidItPage));
+    iDidItPageState.helper = fakeDatabase;
+    iDidItPageState.refresh();
 
     await tester.pump();
 
@@ -52,9 +52,9 @@ void main() {
     FakeDatabase fakeDatabase = FakeDatabase();
     await tester.pumpWidget(Bajsappen());
 
-    MyHomePageState homepageState = tester.state(find.byType(MyHomePage));
-    homepageState.helper = fakeDatabase;
-    homepageState.refresh();
+    IDidItPageState iDidItPageState = tester.state(find.byType(IDidItPage));
+    iDidItPageState.helper = fakeDatabase;
+    iDidItPageState.refresh();
 
     await tester.pump();
 

@@ -55,6 +55,12 @@ class CalendarPageState extends State<CalendarPage> {
     });
   }
 
+  @override
+  void didUpdateWidget(CalendarPage oldVariant) {
+    refresh();
+    super.didUpdateWidget(oldVariant);
+  }
+
   void deletePoop(Poop poop) async {
     await helper.delete(poop);
     await refresh();

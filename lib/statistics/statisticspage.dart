@@ -25,6 +25,12 @@ class StatisticPageState extends State<StatisticPage> {
     fontWeight: FontWeight.bold,
   );
 
+  @override
+  void didUpdateWidget(StatisticPage oldVariant) {
+    refresh();
+    super.didUpdateWidget(oldVariant);
+  }
+
   void onPoopDeleted(Poop poop) async {
     await helper.delete(poop);
     await refresh();
@@ -50,7 +56,9 @@ class StatisticPageState extends State<StatisticPage> {
     refreshedWidgets.add(TimeOfDayStats(poops, highlightStyle: highlightStyle));
     refreshedWidgets
         .add(ConstipationStats(poops, highlightStyle: highlightStyle));
-    statisticsWidgets = refreshedWidgets;
+    setState(() {
+      statisticsWidgets = refreshedWidgets;
+    });
   }
 
   StatisticPageState() {
