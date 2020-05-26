@@ -12,8 +12,7 @@ class PoopButtonAddDialog extends StatefulWidget {
 
 class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
   DateTime _poopDateTime = DateTime.now();
-  double hardness = 1;
-  bool hardnessChanged = false;
+  double hardness = 4;
 
   bool typeSelectorOpen = false;
 
@@ -119,12 +118,9 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
                                 children: <Widget>[
                                   Container(
                                     child: Image(
-                                      image: hardnessChanged
-                                          ? AssetImage('assets/images/type-' +
-                                              hardness.floor().toString() +
-                                              '.png')
-                                          : AssetImage(
-                                              'assets/images/empty.png'),
+                                      image: AssetImage('assets/images/type-' +
+                                          hardness.floor().toString() +
+                                          '.png'),
                                       height: 50,
                                       width: 50,
                                     ),
@@ -144,12 +140,11 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
                                         child: Slider(
                                           value: hardness,
                                           min: 1,
-                                          max: 7.99,
-                                          divisions: 70,
+                                          max: 7,
+                                          divisions: 6,
                                           onChanged: (double newValue) {
                                             setState(() {
                                               hardness = newValue;
-                                              hardnessChanged = true;
                                             });
                                           },
                                         ),
@@ -159,11 +154,13 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
                               SizedBox(
                                 height: 10,
                               ),
-                              Text(hardnessChanged
-                                  ? PoopLocalizations.of(context).get('type_' +
-                                      hardness.floor().toString() +
-                                      '_description')
-                                  : '')
+                              Container(
+                                child: Text(PoopLocalizations.of(context).get(
+                                    'type_' +
+                                        hardness.floor().toString() +
+                                        '_description')),
+                                height: 30,
+                              ),
                             ],
                           )
                         : SizedBox(
@@ -180,7 +177,7 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
               ),
               FlatButton(
                   onPressed: () => Navigator.of(context).pop(
-                      Poop(_poopDateTime, hardnessChanged ? hardness : null)),
+                      Poop(_poopDateTime, typeSelectorOpen ? hardness : null)),
                   child: Text(PoopLocalizations.of(context).get('add'))),
             ],
           ),
