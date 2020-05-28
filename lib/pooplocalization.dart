@@ -61,7 +61,7 @@ class PoopLocalizations {
       'type_6_description': 'Fluffiga bitar med trasade kanter, en mosig konsistens',
       'type_7_description': 'Vattnig utan bitar. Helt flytande.',
       'constipation_statistics': 'Bajstypsstatistik',
-      'constipation_chart_title': 'Antal bajsningar per typ',
+      'constipation_chart_type_title': 'Antal bajsningar per typ',
       'constipation_text_1': 'Du verkar vara ',
       'constipation_text_2': ' i magen.',
       'constipation_grade_0': 'hård',
@@ -70,6 +70,8 @@ class PoopLocalizations {
       'statistics_date_range_0': 'senaste veckan',
       'statistics_date_range_1': 'senaste månaden',
       'statistics_date_range_2': 'alltid',
+      'type': 'Typ',
+      'constipation_chart_title': 'Grupperade bajsningar'
     },
   };
 
