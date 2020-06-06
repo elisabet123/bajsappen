@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../pooplocalization.dart';
-import 'allpooppage.dart';
+import '../visualize/allpooppage.dart';
 
 class CounterWidget extends StatelessWidget {
   final int count;

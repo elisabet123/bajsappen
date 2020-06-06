@@ -1,6 +1,6 @@
 import 'package:bajsappen/calendar/calendarpage.dart';
 import 'package:bajsappen/poop.dart';
-import 'package:bajsappen/statistics/allpooppage.dart';
+import 'package:bajsappen/visualize/allpooppage.dart';
 import 'package:bajsappen/statistics/statisticspage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

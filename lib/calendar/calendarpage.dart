@@ -1,3 +1,5 @@
+import 'package:bajsappen/visualize/poopratingicon.dart';
+import 'package:bajsappen/visualize/pooptypeimage.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -126,18 +128,12 @@ class CalendarPageState extends PoopPageState {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  trailing: Container(
-                    child: Image(
-                      image: poop.hardness != null
-                          ? AssetImage('assets/images/type-' +
-                              poop.hardness.floor().toString() +
-                              '.png')
-                          : AssetImage('assets/images/empty.png'),
-                      height: 50,
-                    ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(width: 0)),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      PoopRatingIcon(poop),
+                      PoopTypeImage(poop)
+                    ],
                   ),
                   onLongPress: () async {
                     var delete = await confirmDelete(context);
