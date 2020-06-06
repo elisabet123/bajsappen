@@ -112,54 +112,52 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
                     typeSelectorOpen
                         ? Column(
                             children: <Widget>[
+                              SliderTheme(
+                                data: SliderThemeData(
+                                  showValueIndicator: ShowValueIndicator.never,
+                                  overlayShape: RoundSliderOverlayShape(
+                                      overlayRadius: 15),
+                                ),
+                                child: Slider(
+                                  value: hardness,
+                                  min: 1,
+                                  max: 7,
+                                  divisions: 6,
+                                  onChanged: (double newValue) {
+                                    setState(() {
+                                      hardness = newValue;
+                                    });
+                                  },
+                                ),
+                              ),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Container(
-                                    child: Image(
-                                      image: AssetImage('assets/images/type-' +
-                                          hardness.floor().toString() +
-                                          '.png'),
-                                      height: 50,
-                                      width: 50,
+                                   Container(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(3),
+                              child: Image(
+                                        image: AssetImage(
+                                            'assets/images/type-' +
+                                                hardness.floor().toString() +
+                                                '.png'),
+                                        height: 50,
+                                      )),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          border: Border.all(width: 0)),
                                     ),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(width: 0)),
+                                  SizedBox(
+                                    width: 10,
                                   ),
                                   Expanded(
-                                      flex: 2,
-                                      child: SliderTheme(
-                                        data: SliderThemeData(
-                                          showValueIndicator:
-                                              ShowValueIndicator.never,
-                                          overlayShape: RoundSliderOverlayShape(
-                                              overlayRadius: 15),
-                                        ),
-                                        child: Slider(
-                                          value: hardness,
-                                          min: 1,
-                                          max: 7,
-                                          divisions: 6,
-                                          onChanged: (double newValue) {
-                                            setState(() {
-                                              hardness = newValue;
-                                            });
-                                          },
-                                        ),
-                                      )),
+                                    flex: 3,
+                                    child: Text(PoopLocalizations.of(context)
+                                        .get('type_' +
+                                            hardness.floor().toString() +
+                                            '_description')),
+                                  ),
                                 ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                child: Text(PoopLocalizations.of(context).get(
-                                    'type_' +
-                                        hardness.floor().toString() +
-                                        '_description')),
-                                height: 30,
                               ),
                             ],
                           )
