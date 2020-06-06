@@ -14,6 +14,9 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
   DateTime _poopDateTime = DateTime.now();
   double hardness = 4;
 
+  var inputsOpen = {
+    'type': false,
+  };
   bool typeSelectorOpen = false;
 
   DateTime setTime(DateTime date, TimeOfDay time) {
@@ -78,95 +81,7 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
             thickness: 1,
             height: 25,
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 8),
-            child: FlatButton(
-                padding: EdgeInsets.all(10),
-                onPressed: () async {
-                  setState(() {
-                    typeSelectorOpen = !typeSelectorOpen;
-                  });
-                },
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: Colors.black54,
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(PoopLocalizations.of(context)
-                            .get('poop_input_hardness')),
-                        Icon(typeSelectorOpen
-                            ? Icons.keyboard_arrow_down
-                            : Icons.keyboard_arrow_left),
-                      ],
-                    ),
-                    SizedBox(
-                      height: typeSelectorOpen ? 10 : 0,
-                    ),
-                    typeSelectorOpen
-                        ? Column(
-                            children: <Widget>[
-                              SliderTheme(
-                                data: SliderThemeData(
-                                  showValueIndicator: ShowValueIndicator.never,
-                                  overlayShape: RoundSliderOverlayShape(
-                                      overlayRadius: 15),
-                                ),
-                                child: Slider(
-                                  value: hardness,
-                                  min: 1,
-                                  max: 7,
-                                  divisions: 6,
-                                  onChanged: (double newValue) {
-                                    setState(() {
-                                      hardness = newValue;
-                                    });
-                                  },
-                                ),
-                              ),
-                              Row(
-                                children: <Widget>[
-                                   Container(
-                                      child: Padding(
-                                        padding: EdgeInsets.all(3),
-                              child: Image(
-                                        image: AssetImage(
-                                            'assets/images/type-' +
-                                                hardness.floor().toString() +
-                                                '.png'),
-                                        height: 50,
-                                      )),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(width: 0)),
-                                    ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(
-                                    flex: 3,
-                                    child: Text(PoopLocalizations.of(context)
-                                        .get('type_' +
-                                            hardness.floor().toString() +
-                                            '_description')),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )
-                        : SizedBox(
-                            height: 0,
-                          )
-                  ],
-                )),
-          ),
+          poopFeatureInput('poop_input_hardness', 'type', poopTypeInput()),
           ButtonBar(
             children: <Widget>[
               FlatButton(
@@ -182,5 +97,101 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
         ],
       ),
     ));
+  }
+
+  Widget poopFeatureInput(String textKey, String input, Widget inputWidget) {
+    return Padding(
+      padding: EdgeInsets.only(top: 8),
+      child: FlatButton(
+          padding: EdgeInsets.all(10),
+          onPressed: () async {
+            setState(() {
+              inputsOpen[input] = !inputsOpen[input];
+            });
+          },
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Colors.black54,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(PoopLocalizations.of(context)
+                      .get(textKey)),
+                  Icon(inputsOpen[input]
+                      ? Icons.keyboard_arrow_down
+                      : Icons.keyboard_arrow_left),
+                ],
+              ),
+              SizedBox(
+                height: inputsOpen[input] ? 10 : 0,
+              ),
+              inputsOpen[input]
+                  ? inputWidget: SizedBox(
+                height: 0,
+              ),
+
+            ],
+          )),
+    );
+  }
+
+  Widget poopTypeInput() {
+    return Column(
+      children: <Widget>[
+        SliderTheme(
+          data: SliderThemeData(
+            showValueIndicator: ShowValueIndicator.never,
+            overlayShape: RoundSliderOverlayShape(
+                overlayRadius: 15),
+          ),
+          child: Slider(
+            value: hardness,
+            min: 1,
+            max: 7,
+            divisions: 6,
+            onChanged: (double newValue) {
+              setState(() {
+                hardness = newValue;
+              });
+            },
+          ),
+        ),
+        Row(
+          children: <Widget>[
+            Container(
+              child: Padding(
+                  padding: EdgeInsets.all(3),
+                  child: Image(
+                    image: AssetImage(
+                        'assets/images/type-' +
+                            hardness.floor().toString() +
+                            '.png'),
+                    height: 50,
+                  )),
+              decoration: BoxDecoration(
+                  borderRadius:
+                  BorderRadius.circular(5),
+                  border: Border.all(width: 0)),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              flex: 3,
+              child: Text(PoopLocalizations.of(context)
+                  .get('type_' +
+                  hardness.floor().toString() +
+                  '_description')),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }
