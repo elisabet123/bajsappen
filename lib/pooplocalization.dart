@@ -17,6 +17,7 @@ class PoopLocalizations {
       'title': 'Bajsappen',
       'home': 'Registrera bajs',
       'poop_input_hardness': 'hårdhet',
+      'poop_input_rating': 'betyg',
       'statistics': 'Statistik',
       'calendar': 'Historik',
       'latest_poop': 'Senaste bajset: ',

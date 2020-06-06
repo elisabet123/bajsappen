@@ -1,4 +1,5 @@
 import 'package:bajsappen/addpoopdialog/datetimebuttons.dart';
+import 'package:bajsappen/addpoopdialog/ratingbar.dart';
 import 'package:bajsappen/pooplocalization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -13,11 +14,12 @@ class PoopButtonAddDialog extends StatefulWidget {
 class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
   DateTime _poopDateTime = DateTime.now();
   double hardness = 4;
+  double rating = 3;
 
   var inputsOpen = {
     'type': false,
+    'rating': false,
   };
-  bool typeSelectorOpen = false;
 
   DateTime setTime(DateTime date, TimeOfDay time) {
     return DateTime(date.year, date.month, date.day, time.hour, time.minute);
@@ -82,6 +84,7 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
             height: 25,
           ),
           poopFeatureInput('poop_input_hardness', 'type', poopTypeInput()),
+          poopFeatureInput('poop_input_rating', 'rating', poopRatingInput()),
           ButtonBar(
             children: <Widget>[
               FlatButton(
@@ -89,8 +92,12 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
                 child: Text(PoopLocalizations.of(context).get('cancel')),
               ),
               FlatButton(
-                  onPressed: () => Navigator.of(context).pop(
-                      Poop(_poopDateTime, typeSelectorOpen ? hardness : null)),
+                  onPressed: () {
+                    Navigator.of(context).pop(Poop(
+                        _poopDateTime,
+                        inputsOpen['type'] ? hardness : null,
+                        inputsOpen['rating'] ? rating : null));
+                  },
                   child: Text(PoopLocalizations.of(context).get('add'))),
             ],
           ),
@@ -121,8 +128,7 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(PoopLocalizations.of(context)
-                      .get(textKey)),
+                  Text(PoopLocalizations.of(context).get(textKey)),
                   Icon(inputsOpen[input]
                       ? Icons.keyboard_arrow_down
                       : Icons.keyboard_arrow_left),
@@ -132,10 +138,10 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
                 height: inputsOpen[input] ? 10 : 0,
               ),
               inputsOpen[input]
-                  ? inputWidget: SizedBox(
-                height: 0,
-              ),
-
+                  ? inputWidget
+                  : SizedBox(
+                      height: 0,
+                    ),
             ],
           )),
     );
@@ -147,8 +153,7 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
         SliderTheme(
           data: SliderThemeData(
             showValueIndicator: ShowValueIndicator.never,
-            overlayShape: RoundSliderOverlayShape(
-                overlayRadius: 15),
+            overlayShape: RoundSliderOverlayShape(overlayRadius: 15),
           ),
           child: Slider(
             value: hardness,
@@ -168,15 +173,13 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
               child: Padding(
                   padding: EdgeInsets.all(3),
                   child: Image(
-                    image: AssetImage(
-                        'assets/images/type-' +
-                            hardness.floor().toString() +
-                            '.png'),
+                    image: AssetImage('assets/images/type-' +
+                        hardness.floor().toString() +
+                        '.png'),
                     height: 50,
                   )),
               decoration: BoxDecoration(
-                  borderRadius:
-                  BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(5),
                   border: Border.all(width: 0)),
             ),
             SizedBox(
@@ -185,13 +188,52 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
             Expanded(
               flex: 3,
               child: Text(PoopLocalizations.of(context)
-                  .get('type_' +
-                  hardness.floor().toString() +
-                  '_description')),
+                  .get('type_' + hardness.floor().toString() + '_description')),
             ),
           ],
         ),
       ],
+    );
+  }
+
+  Widget poopRatingInput() {
+    return RatingBar(
+      initialRating: rating,
+      itemCount: 5,
+      itemBuilder: (context, index) {
+        switch (index) {
+          case 0:
+            return Icon(
+              Icons.sentiment_very_dissatisfied,
+              color: Colors.red,
+            );
+          case 1:
+            return Icon(
+              Icons.sentiment_dissatisfied,
+              color: Colors.redAccent,
+            );
+          case 2:
+            return Icon(
+              Icons.sentiment_neutral,
+              color: Colors.amber,
+            );
+          case 3:
+            return Icon(
+              Icons.sentiment_satisfied,
+              color: Colors.lightGreen,
+            );
+          default:
+            return Icon(
+              Icons.sentiment_very_satisfied,
+              color: Colors.green,
+            );
+        }
+      },
+      onRatingUpdate: (newRating) {
+        setState(() {
+          rating = newRating;
+        });
+      },
     );
   }
 }

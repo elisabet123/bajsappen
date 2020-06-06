@@ -8,11 +8,12 @@ import 'package:sqflite/sqflite.dart';
 final String tableName = 'poopTable';
 final String columnEpoch = 'epoch';
 final String columnHardness = 'hardness';
+final String columnRating = 'grade';
 
 // singleton class to manage the database
 class DatabaseHelper {
   static final _databaseName = "Bajsappen.db";
-  static final _databaseVersion = 2;
+  static final _databaseVersion = 3;
 
   // Make this a singleton class.
   DatabaseHelper._privateConstructor();
@@ -47,15 +48,21 @@ class DatabaseHelper {
     await db.execute('''
               CREATE TABLE $tableName (
                 $columnEpoch INTEGER PRIMARY KEY,
-                $columnHardness DOUBLE
+                $columnHardness DOUBLE,
+                $columnRating DOUBLE
               )
               ''');
   }
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    if (oldVersion == 1 && newVersion == 2) {
+    if (oldVersion < 2) {
       await db.execute('''
               ALTER TABLE $tableName add column $columnHardness DOUBLE 
+              ''');
+    }
+    if (oldVersion < 3) {
+      await db.execute('''
+              ALTER TABLE $tableName add column $columnRating DOUBLE 
               ''');
     }
   }
@@ -65,7 +72,8 @@ class DatabaseHelper {
     Database db = await database;
     int id = await db.insert(tableName, <String, dynamic>{
       columnEpoch: poop.dateTime.millisecondsSinceEpoch,
-      columnHardness: poop.hardness
+      columnHardness: poop.hardness,
+      columnRating: poop.rating
     });
     return id;
   }
@@ -90,6 +98,7 @@ class DatabaseHelper {
       return Poop(
         DateTime.fromMillisecondsSinceEpoch(maps[i][columnEpoch]),
         maps[i][columnHardness],
+        maps[i][columnRating]
       );
     });
   }

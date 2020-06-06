@@ -41,7 +41,8 @@ class AllPoopWidget extends StatefulWidget {
   AllPoopWidget(this.poops, this._deletePoop, {Key key}) : super(key: key);
 
   @override
-  AllPoopWidgetState createState() => AllPoopWidgetState(this.poops, _deletePoop);
+  AllPoopWidgetState createState() =>
+      AllPoopWidgetState(this.poops, _deletePoop);
 }
 
 class AllPoopWidgetState extends State<AllPoopWidget> {
@@ -105,18 +106,29 @@ class AllPoopWidgetState extends State<AllPoopWidget> {
             title: Text(
               '${DateFormat('yyyy-MM-dd HH:mm').format(poop.dateTime)}',
             ),
-            trailing: Container(
-              child: Image(
-                image: poop.hardness != null
-                    ? AssetImage('assets/images/type-' +
-                        poop.hardness.floor().toString() +
-                        '.png')
-                    : AssetImage('assets/images/empty.png'),
-                height: 50,
-              ),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(width: 0)),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.all(5),
+                    child: IconTheme(
+                      data: IconThemeData(size: 40),
+                      child: getRatingIcon(poop.rating),
+                    )),
+                Container(
+                  child: Image(
+                    image: poop.hardness != null
+                        ? AssetImage('assets/images/type-' +
+                            poop.hardness.floor().toString() +
+                            '.png')
+                        : AssetImage('assets/images/empty.png'),
+                    height: 50,
+                  ),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(width: 0)),
+                ),
+              ],
             ),
             onLongPress: () async {
               var delete = await confirmDelete(context);
@@ -155,5 +167,41 @@ class AllPoopWidgetState extends State<AllPoopWidget> {
         },
       ),
     );
+  }
+
+  Widget getRatingIcon(double rating) {
+    if (rating == null) {
+      return Icon(
+        Icons.sentiment_neutral,
+        color: Colors.grey[200],
+      );
+    }
+    switch (rating.floor()) {
+      case 0:
+        return Icon(
+          Icons.sentiment_very_dissatisfied,
+          color: Colors.red,
+        );
+      case 1:
+        return Icon(
+          Icons.sentiment_dissatisfied,
+          color: Colors.redAccent,
+        );
+      case 2:
+        return Icon(
+          Icons.sentiment_neutral,
+          color: Colors.amber,
+        );
+      case 3:
+        return Icon(
+          Icons.sentiment_satisfied,
+          color: Colors.lightGreen,
+        );
+      default:
+        return Icon(
+          Icons.sentiment_very_satisfied,
+          color: Colors.green,
+        );
+    }
   }
 }
