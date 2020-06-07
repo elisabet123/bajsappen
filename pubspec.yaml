@@ -1,6 +1,6 @@
 name: bajsappen
 description: Track your poop
-version: 0.0.8
+version: 0.0.9
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
