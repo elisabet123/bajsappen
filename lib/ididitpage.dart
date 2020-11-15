@@ -5,7 +5,6 @@ import 'package:bajsappen/pooppagestate.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'database_helpers.dart';
 
 class IDidItPage extends StatefulWidget {
   @override

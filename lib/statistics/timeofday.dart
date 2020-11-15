@@ -166,7 +166,7 @@ class ChartPage extends StatelessWidget {
             children: <Widget>[
               Text(
                 PoopLocalizations.of(context).get(titleKey),
-                style: Theme.of(context).textTheme.body2,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
               Expanded(
                 child: chart,

@@ -11,14 +11,14 @@ import '../pooplocalization.dart';
 class ConstipationStats extends StatelessWidget {
   final List<int> poopsByType;
   final TextStyle highlightStyle;
-  List<int> poopsByGrade;
+  final List<int> poopsByGrade = [];
 
   ConstipationStats(List<Poop> poops, {this.highlightStyle})
       : this.poopsByType = groupByType(poops) {
     int constipatedPoops = poopsByType[0] + poopsByType[1];
     int normalPoops = poopsByType[2] + poopsByType[3];
     int diarrhoeaPoops = poopsByType[4] + poopsByType[5] + poopsByType[6];
-    poopsByGrade = [constipatedPoops, normalPoops, diarrhoeaPoops];
+    poopsByGrade.addAll([constipatedPoops, normalPoops, diarrhoeaPoops]);
   }
 
   static List<int> groupByType(List<Poop> poops) {
@@ -145,7 +145,7 @@ class ChartPage extends StatelessWidget {
             children: <Widget>[
               Text(
                 PoopLocalizations.of(context).get(titleKey),
-                style: Theme.of(context).textTheme.body2,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
               Expanded(
                 child: chart,

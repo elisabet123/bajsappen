@@ -6,7 +6,6 @@ import 'package:bajsappen/statistics/timeofday.dart';
 import 'package:bajsappen/statistics/weekday.dart';
 import 'package:flutter/material.dart';
 
-import '../database_helpers.dart';
 import '../poop.dart';
 
 class StatisticPage extends StatefulWidget {

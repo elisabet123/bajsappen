@@ -95,8 +95,8 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
                   onPressed: () {
                     Navigator.of(context).pop(Poop(
                         _poopDateTime,
-                        inputsOpen['type'] ? hardness : null,
-                        inputsOpen['rating'] ? rating : null));
+                        inputsOpen['type'] ? hardness.floor() : null,
+                        inputsOpen['rating'] ? rating.floor() : null));
                   },
                   child: Text(PoopLocalizations.of(context).get('add'))),
             ],

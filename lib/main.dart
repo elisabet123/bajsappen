@@ -1,11 +1,9 @@
 import 'package:bajsappen/calendar/calendarpage.dart';
-import 'package:bajsappen/poop.dart';
 import 'package:bajsappen/visualize/allpooppage.dart';
 import 'package:bajsappen/statistics/statisticspage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'database_helpers.dart';
 import 'ididitpage.dart';
 import 'pooplocalization.dart';
 
@@ -98,15 +96,15 @@ class MyHomePageState extends State<MyHomePage> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.spa),
-            title: Text(PoopLocalizations.of(context).get('home')),
+            label: PoopLocalizations.of(context).get('home'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.show_chart),
-            title: Text(PoopLocalizations.of(context).get('statistics')),
+            label: PoopLocalizations.of(context).get('statistics'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
-            title: Text(PoopLocalizations.of(context).get('calendar')),
+            label: PoopLocalizations.of(context).get('calendar'),
           ),
         ],
         currentIndex: _selectedIndex,

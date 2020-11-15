@@ -92,7 +92,7 @@ class WeekdayStats extends StatelessWidget {
             children: <Widget>[
               Text(
                 PoopLocalizations.of(context).get('weekday_chart_title'),
-                style: Theme.of(context).textTheme.body2,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
               Expanded(
                 child: charts.BarChart(series, animate: true),

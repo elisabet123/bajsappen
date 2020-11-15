@@ -48,8 +48,8 @@ class DatabaseHelper {
     await db.execute('''
               CREATE TABLE $tableName (
                 $columnEpoch INTEGER PRIMARY KEY,
-                $columnHardness DOUBLE,
-                $columnRating DOUBLE
+                $columnHardness INTEGER,
+                $columnRating INTEGER
               )
               ''');
   }
@@ -57,12 +57,12 @@ class DatabaseHelper {
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
       await db.execute('''
-              ALTER TABLE $tableName add column $columnHardness DOUBLE 
+              ALTER TABLE $tableName add column $columnHardness INTEGER 
               ''');
     }
     if (oldVersion < 3) {
       await db.execute('''
-              ALTER TABLE $tableName add column $columnRating DOUBLE 
+              ALTER TABLE $tableName add column $columnRating INTEGER 
               ''');
     }
   }
@@ -101,5 +101,11 @@ class DatabaseHelper {
         maps[i][columnRating]
       );
     });
+  }
+
+  void clear() async {
+    Database db = await database;
+
+    db.delete(tableName);
   }
 }

@@ -30,29 +30,37 @@ class AllPoopPageState extends PoopPageState {
     });
   }
 
+  void reload() async {
+    await super.syncRemote();
+    refresh();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return AllPoopWidget(_poops, super.deletePoop);
+    return AllPoopWidget(_poops, super.deletePoop, reload);
   }
 }
 
 class AllPoopWidget extends StatefulWidget {
   final List<Poop> poops;
   final Function(Poop) _deletePoop;
+  final Function _reload;
 
-  AllPoopWidget(this.poops, this._deletePoop, {Key key}) : super(key: key);
+  AllPoopWidget(this.poops, this._deletePoop, this._reload, {Key key}) : super(key: key);
 
   @override
   AllPoopWidgetState createState() =>
-      AllPoopWidgetState(this.poops, _deletePoop);
+      AllPoopWidgetState(this.poops, _deletePoop, _reload);
 }
 
 class AllPoopWidgetState extends State<AllPoopWidget> {
   final Function(Poop) _deletePoop;
+  final Function _reload;
   List<Poop> poops;
   ScaffoldState scaffold;
+  bool reloadDisabled = false;
 
-  AllPoopWidgetState(this.poops, this._deletePoop);
+  AllPoopWidgetState(this.poops, this._deletePoop, this._reload);
 
   @override
   void didUpdateWidget(Widget oldVariant) {
@@ -60,6 +68,16 @@ class AllPoopWidgetState extends State<AllPoopWidget> {
       poops = widget.poops;
     });
     super.didUpdateWidget(oldVariant);
+  }
+
+  reload() async {
+    setState(() {
+      reloadDisabled = true;
+    });
+    await _reload();
+    setState(() {
+      reloadDisabled = false;
+    });
   }
 
   Future<bool> confirmDelete(BuildContext context) async {
@@ -85,7 +103,6 @@ class AllPoopWidgetState extends State<AllPoopWidget> {
 
   onDelete(BuildContext context, Poop poop) {
     _deletePoop(poop).then((_) {
-      // undo?
       poops.remove(poop);
       setState(() {
         poops = poops;
@@ -144,6 +161,7 @@ class AllPoopWidgetState extends State<AllPoopWidget> {
     return Scaffold(
       appBar: AppBar(
         title: Text(PoopLocalizations.of(context).get('all_poops')),
+        actions: [IconButton(icon: Icon(Icons.refresh), onPressed: reloadDisabled ? null : reload, )],
       ),
       body: Builder(
         builder: (BuildContext buildContext) {
