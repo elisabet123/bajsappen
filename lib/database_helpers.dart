@@ -10,6 +10,9 @@ final String columnEpoch = 'epoch';
 final String columnHardness = 'hardness';
 final String columnRating = 'grade';
 
+final String personTable = 'personTable';
+final String personId = 'id';
+
 // singleton class to manage the database
 class DatabaseHelper {
   static final _databaseName = "Bajsappen.db";
@@ -65,6 +68,11 @@ class DatabaseHelper {
               ALTER TABLE $tableName add column $columnRating INTEGER 
               ''');
     }
+    if (oldVersion < 4) {
+      await db.execute('''
+              CREATE TABLE $personTable ( $personId STRING PRIMARY KEY )
+      ''');
+    }
   }
 
   // Database helper methods:
@@ -95,11 +103,8 @@ class DatabaseHelper {
       where: '$columnEpoch > $sinceEpoch',
     );
     return List.generate(maps.length, (i) {
-      return Poop(
-        DateTime.fromMillisecondsSinceEpoch(maps[i][columnEpoch]),
-        maps[i][columnHardness],
-        maps[i][columnRating]
-      );
+      return Poop(DateTime.fromMillisecondsSinceEpoch(maps[i][columnEpoch]),
+          maps[i][columnHardness], maps[i][columnRating]);
     });
   }
 
@@ -107,5 +112,15 @@ class DatabaseHelper {
     Database db = await database;
 
     db.delete(tableName);
+  }
+
+  Future<String> getName() async {
+    Database db = await database;
+    List<Map> maps = await db.query(personTable);
+    if(maps.length > 0) {
+      return maps[0][personId];
+    } else {
+      return null;
+    }
   }
 }

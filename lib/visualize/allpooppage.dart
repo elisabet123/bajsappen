@@ -128,7 +128,7 @@ class AllPoopWidgetState extends State<AllPoopWidget> {
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                PoopRatingIcon(poop),
+                PoopRatingIcon(poop.rating, true, 5),
                 PoopTypeImage(poop),
               ],
             ),
@@ -157,6 +157,7 @@ class AllPoopWidgetState extends State<AllPoopWidget> {
       context: context,
       tiles: tiles,
     ).toList();
+
 
     return Scaffold(
       appBar: AppBar(

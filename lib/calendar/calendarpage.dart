@@ -129,7 +129,7 @@ class CalendarPageState extends PoopPageState {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      PoopRatingIcon(poop),
+                      PoopRatingIcon(poop.rating, true, 5),
                       PoopTypeImage(poop)
                     ],
                   ),

@@ -14,10 +14,14 @@ class PoopButtonAddDialog extends StatefulWidget {
 class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
   DateTime _poopDateTime = DateTime.now();
   double hardness = 4;
-  double rating = 3;
+  int rating = 3;
 
   var inputsOpen = {
     'type': false,
+    'rating': false,
+  };
+
+  var inputsSelected = {
     'rating': false,
   };
 
@@ -84,7 +88,15 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
             height: 25,
           ),
           poopFeatureInput('poop_input_hardness', 'type', poopTypeInput()),
-          poopFeatureInput('poop_input_rating', 'rating', poopRatingInput()),
+          poopFeatureInput(
+              'poop_input_rating',
+              'rating',
+              PoopRatingBar(
+                onRatingChanged: (rating) => setState(() {
+                  this.rating = rating;
+                  this.inputsSelected['rating'] = true;
+                }),
+              )),
           ButtonBar(
             children: <Widget>[
               FlatButton(
@@ -96,7 +108,9 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
                     Navigator.of(context).pop(Poop(
                         _poopDateTime,
                         inputsOpen['type'] ? hardness.floor() : null,
-                        inputsOpen['rating'] ? rating.floor() : null));
+                        inputsOpen['rating'] && inputsSelected['rating']
+                            ? rating
+                            : null));
                   },
                   child: Text(PoopLocalizations.of(context).get('add'))),
             ],
@@ -193,47 +207,6 @@ class PoopButtonAddDialogState extends State<PoopButtonAddDialog> {
           ],
         ),
       ],
-    );
-  }
-
-  Widget poopRatingInput() {
-    return RatingBar(
-      initialRating: rating,
-      itemCount: 5,
-      itemBuilder: (context, index) {
-        switch (index) {
-          case 0:
-            return Icon(
-              Icons.sentiment_very_dissatisfied,
-              color: Colors.red,
-            );
-          case 1:
-            return Icon(
-              Icons.sentiment_dissatisfied,
-              color: Colors.redAccent,
-            );
-          case 2:
-            return Icon(
-              Icons.sentiment_neutral,
-              color: Colors.amber,
-            );
-          case 3:
-            return Icon(
-              Icons.sentiment_satisfied,
-              color: Colors.lightGreen,
-            );
-          default:
-            return Icon(
-              Icons.sentiment_very_satisfied,
-              color: Colors.green,
-            );
-        }
-      },
-      onRatingUpdate: (newRating) {
-        setState(() {
-          rating = newRating;
-        });
-      },
     );
   }
 }

@@ -1,54 +1,56 @@
 import 'package:flutter/material.dart';
 
-import '../poop.dart';
 
 class PoopRatingIcon extends StatelessWidget {
-  final Poop poop;
+  final int rating;
+  final bool withColor;
 
-  const PoopRatingIcon(this.poop, {Key key}) : super(key: key);
+  final double padding;
+
+  PoopRatingIcon(this.rating, this.withColor, this.padding);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(5),
-      child: IconTheme(
-        data: IconThemeData(size: 40),
-        child: _poopIcon(),
-      ));
+        padding: EdgeInsets.all(this.padding),
+        child: IconTheme(
+          data: IconThemeData(size: 40),
+          child: _poopIcon(),
+        ));
   }
 
   Widget _poopIcon() {
-    if (poop.rating == null) {
+    if (this.rating == null) {
       return Icon(
         Icons.sentiment_neutral,
         color: Colors.grey[200],
       );
     }
-    switch (poop.rating.floor()) {
-      case 0:
-        return Icon(
-          Icons.sentiment_very_dissatisfied,
-          color: Colors.red,
-        );
+    switch (this.rating) {
       case 1:
         return Icon(
-          Icons.sentiment_dissatisfied,
-          color: Colors.redAccent,
+          Icons.sentiment_very_dissatisfied,
+          color: this.withColor ? Colors.red : Colors.grey[200],
         );
       case 2:
         return Icon(
-          Icons.sentiment_neutral,
-          color: Colors.amber,
+          Icons.sentiment_dissatisfied,
+          color: this.withColor ? Colors.redAccent : Colors.grey[200],
         );
       case 3:
         return Icon(
+          Icons.sentiment_neutral,
+          color: this.withColor ? Colors.amber : Colors.grey[200],
+        );
+      case 4:
+        return Icon(
           Icons.sentiment_satisfied,
-          color: Colors.lightGreen,
+          color: this.withColor ? Colors.lightGreen : Colors.grey[200],
         );
       default:
         return Icon(
           Icons.sentiment_very_satisfied,
-          color: Colors.green,
+          color: this.withColor ? Colors.green : Colors.grey[200],
         );
     }
   }
