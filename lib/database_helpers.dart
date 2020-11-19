@@ -16,7 +16,7 @@ final String personId = 'id';
 // singleton class to manage the database
 class DatabaseHelper {
   static final _databaseName = "Bajsappen.db";
-  static final _databaseVersion = 3;
+  static final _databaseVersion = 4;
 
   // Make this a singleton class.
   DatabaseHelper._privateConstructor();
@@ -122,5 +122,13 @@ class DatabaseHelper {
     } else {
       return null;
     }
+  }
+
+  setName(String name) async {
+    Database db = await database;
+    await db.delete(personTable);
+    await db.insert(personTable, {
+      personId: name
+    });
   }
 }

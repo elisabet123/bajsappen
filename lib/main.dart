@@ -4,6 +4,7 @@ import 'package:bajsappen/statistics/statisticspage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'database_helpers.dart';
 import 'ididitpage.dart';
 import 'pooplocalization.dart';
 
@@ -41,6 +42,7 @@ class MyHomePage extends StatefulWidget {
 class MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   Widget activeTab;
+  String name;
 
   @override
   void initState() {
@@ -52,6 +54,10 @@ class MyHomePageState extends State<MyHomePage> {
   refresh() async {
     setState(() {
       activeTab = getCurrentTab();
+    });
+    String name = await DatabaseHelper.instance.getName();
+    setState(() {
+      this.name = name;
     });
   }
 
@@ -77,8 +83,8 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   void _showList() async {
-    await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AllPoopPage(0)));
+    await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => AllPoopPage(0)));
     refresh();
   }
 
@@ -88,6 +94,8 @@ class MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(PoopLocalizations.of(context).title),
         actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.settings), onPressed: () { _showInputDialog(context); }),
           IconButton(icon: Icon(Icons.list), onPressed: _showList),
         ],
       ),
@@ -110,6 +118,50 @@ class MyHomePageState extends State<MyHomePage> {
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
         onTap: _onNavItemTapped,
+      ),
+    );
+  }
+
+  _showInputDialog(BuildContext context) async {
+    String name = await _inputNameDialog(context);
+    if (name != null) {
+      DatabaseHelper.instance.setName(name);
+    }
+    setState(() {
+      this.name = name;
+    });
+  }
+
+  Future<String> _inputNameDialog(BuildContext context) {
+    TextEditingController _c = new TextEditingController(text: name);
+
+    return showDialog(
+      context: context,
+      child: new AlertDialog(
+        contentPadding: const EdgeInsets.all(16.0),
+        content: new Row(
+          children: <Widget>[
+            new Expanded(
+              child: new TextField(
+                autofocus: true,
+                decoration: new InputDecoration(labelText: 'Namn'),
+                controller: _c,
+              ),
+            )
+          ],
+        ),
+        actions: <Widget>[
+          new FlatButton(
+              child: const Text('AVBRYT'),
+              onPressed: () {
+                Navigator.of(context).pop(null);
+              }),
+          new FlatButton(
+              child: const Text('SPARA'),
+              onPressed: () {
+                Navigator.of(context).pop(_c.text);
+              })
+        ],
       ),
     );
   }

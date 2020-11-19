@@ -28,6 +28,11 @@ class FakeDatabase extends Mock implements DatabaseHelper {
     _poops.add(poop);
     return Future.value(_poops.length);
   }
+
+  @override
+  Future<String> getName() {
+    return null;
+  }
 }
 
 void main() {

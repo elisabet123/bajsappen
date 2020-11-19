@@ -9,14 +9,10 @@ class PoopButton extends StatefulWidget {
   PoopButton(this.onPressed) : super();
 
   @override
-  PoopButtonState createState() => PoopButtonState(onPressed);
+  PoopButtonState createState() => PoopButtonState();
 }
 
 class PoopButtonState extends State<PoopButton> {
-  final Function(Poop) onPressed;
-
-  PoopButtonState(this.onPressed) : super();
-
   @override
   Widget build(BuildContext context) {
     return new RaisedButton(
@@ -31,7 +27,7 @@ class PoopButtonState extends State<PoopButton> {
             });
 
         if (poop != null) {
-          this.onPressed(poop);
+          widget.onPressed(poop);
         }
       },
       shape: CircleBorder(side: BorderSide(color: Colors.brown, width: 3)),
