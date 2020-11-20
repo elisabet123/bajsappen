@@ -46,7 +46,8 @@ class CalendarPageState extends PoopPageState {
           }
         });
 
-        var selectedDay = DateTime(_selectedDateTime.year, _selectedDateTime.month, _selectedDateTime.day);
+        var selectedDay = DateTime(_selectedDateTime.year,
+            _selectedDateTime.month, _selectedDateTime.day);
         _selectedEvents = _events[selectedDay] ?? [];
       });
     });
@@ -66,7 +67,7 @@ class CalendarPageState extends PoopPageState {
           return AlertDialog(
             title: Text(PoopLocalizations.of(context).get('remove_poop_title')),
             content:
-            Text(PoopLocalizations.of(context).get('remove_poop_question')),
+                Text(PoopLocalizations.of(context).get('remove_poop_question')),
             actions: <Widget>[
               FlatButton(
                   onPressed: () => Navigator.of(context).pop(true),
@@ -101,11 +102,22 @@ class CalendarPageState extends PoopPageState {
       calendarStyle: CalendarStyle(
         selectedColor: Colors.brown[400],
         todayColor: Colors.brown[200],
-        markersColor: Colors.brown[700],
         outsideDaysVisible: false,
       ),
       onDaySelected: _onDaySelected,
+      builders: new CalendarBuilders(markersBuilder: _markersBuilder),
     );
+  }
+
+  List<Widget> _markersBuilder(BuildContext context, DateTime day,
+      List<dynamic> events, List<dynamic> _holidays) {
+    return events
+        .map((poop) => PoopTypeImage(
+              poop,
+              size: 25,
+              border: false,
+            ))
+        .toList();
   }
 
   Widget _buildEventList() {
@@ -129,7 +141,7 @@ class CalendarPageState extends PoopPageState {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      PoopRatingIcon(poop.rating, true, 5),
+                      PoopRatingIcon(poop.rating),
                       PoopTypeImage(poop)
                     ],
                   ),

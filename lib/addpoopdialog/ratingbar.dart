@@ -25,8 +25,8 @@ class PoopRatingBarState extends State<PoopRatingBar> {
     return GestureDetector(
       child: PoopRatingIcon(
           rating,
-          selectedRating == rating,
-          0),
+          withColor: selectedRating == rating,
+          padding: 0),
       onTap: () {
         widget.onRatingChanged(rating);
         setState(() {

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-
 class PoopRatingIcon extends StatelessWidget {
   final int rating;
   final bool withColor;
 
   final double padding;
+  final double size;
 
-  PoopRatingIcon(this.rating, this.withColor, this.padding);
+  PoopRatingIcon(this.rating, {this.withColor = true, this.padding = 5, this.size = 40});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: EdgeInsets.all(this.padding),
         child: IconTheme(
-          data: IconThemeData(size: 40),
+          data: IconThemeData(size: this.size),
           child: _poopIcon(),
         ));
   }

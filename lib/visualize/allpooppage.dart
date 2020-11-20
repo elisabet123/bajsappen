@@ -128,7 +128,7 @@ class AllPoopWidgetState extends State<AllPoopWidget> {
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                PoopRatingIcon(poop.rating, true, 5),
+                PoopRatingIcon(poop.rating),
                 PoopTypeImage(poop),
               ],
             ),
