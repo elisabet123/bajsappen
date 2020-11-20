@@ -61,8 +61,9 @@ abstract class PoopPageState extends State<StatefulWidget> {
   }
 
   Future<void> syncRemote() async {
+    var remote = await _getRemote();
     if (hasRemote) {
-      List<Poop> poops = await (await _getRemote()).getAllPoops();
+      List<Poop> poops = await remote.getAllPoops();
       _helper.clear();
       poops.forEach((poop) => _helper.insertPoop(poop));
     }
