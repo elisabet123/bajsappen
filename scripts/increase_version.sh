@@ -30,4 +30,4 @@ sed 's|        versionCode .*|        versionCode '${NEW_VERSION_CODE}'|' $FILE_
 mv ${FILE_ANDROID}.tmp $FILE_ANDROID
 
 COMMIT_MESSAGE="Setting version to $NEW_VERSION"
-git commit -am $COMMIT_MESSAGE
+git commit -am "$COMMIT_MESSAGE"
