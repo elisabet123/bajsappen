@@ -1,0 +1,33 @@
+# Automatically generated on 2020-11-20 UTC from https://codemagic.io/app/5e3ad7bde850283ace53e2a3/settings
+# Note that this configuration is not an exact match to UI settings. Review and adjust as necessary.
+
+workflows:
+  default-workflow:
+    name: Default Workflow
+    max_build_duration: 60
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+        - tag
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
+    scripts:
+      - cd . && flutter packages pub get
+      - cd . && flutter test
+    artifacts:
+      - flutter_drive.log
+    publishing:
+      email:
+        recipients:
+          - maja.elisabet@gmail.com
+      github_releases:
+        prerelease: false
+        artifact_patterns:
+          - '*.apk'
+          - '*.ipa'

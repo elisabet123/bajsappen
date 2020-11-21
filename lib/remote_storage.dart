@@ -47,7 +47,7 @@ class RemoteStorage extends Remote {
 
       return poopList;
     }
-    throw new HttpException("OH NO ${response.statusCode}");
+    throw new HttpException("OH NO ${response.statusCode} ${response.body}");
   }
 
   deletePoop(Poop poop) async {

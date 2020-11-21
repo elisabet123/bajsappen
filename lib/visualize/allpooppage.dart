@@ -46,21 +46,20 @@ class AllPoopWidget extends StatefulWidget {
   final Function(Poop) _deletePoop;
   final Function _reload;
 
-  AllPoopWidget(this.poops, this._deletePoop, this._reload, {Key key}) : super(key: key);
+  AllPoopWidget(this.poops, this._deletePoop, this._reload, {Key key})
+      : super(key: key);
 
   @override
   AllPoopWidgetState createState() =>
-      AllPoopWidgetState(this.poops, _deletePoop, _reload);
+      AllPoopWidgetState(this.poops);
 }
 
 class AllPoopWidgetState extends State<AllPoopWidget> {
-  final Function(Poop) _deletePoop;
-  final Function _reload;
   List<Poop> poops;
   ScaffoldState scaffold;
   bool reloadDisabled = false;
 
-  AllPoopWidgetState(this.poops, this._deletePoop, this._reload);
+  AllPoopWidgetState(this.poops);
 
   @override
   void didUpdateWidget(Widget oldVariant) {
@@ -70,14 +69,29 @@ class AllPoopWidgetState extends State<AllPoopWidget> {
     super.didUpdateWidget(oldVariant);
   }
 
-  reload() async {
+  reload(BuildContext context) async {
     setState(() {
       reloadDisabled = true;
     });
-    await _reload();
-    setState(() {
-      reloadDisabled = false;
-    });
+    try {
+      await widget._reload();
+    } catch (e) {
+      await showDialog(
+          context: context,
+          child: AlertDialog(
+            title: Text('Something went wrong!'),
+            content: Text(e.toString()),
+            actions: [
+              FlatButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(PoopLocalizations.of(context).get('cancel'))),
+            ],
+          ));
+    } finally {
+      setState(() {
+        reloadDisabled = false;
+      });
+    }
   }
 
   Future<bool> confirmDelete(BuildContext context) async {
@@ -102,7 +116,7 @@ class AllPoopWidgetState extends State<AllPoopWidget> {
   }
 
   onDelete(BuildContext context, Poop poop) {
-    _deletePoop(poop).then((_) {
+    widget._deletePoop(poop).then((_) {
       poops.remove(poop);
       setState(() {
         poops = poops;
@@ -158,11 +172,15 @@ class AllPoopWidgetState extends State<AllPoopWidget> {
       tiles: tiles,
     ).toList();
 
-
     return Scaffold(
       appBar: AppBar(
         title: Text(PoopLocalizations.of(context).get('all_poops')),
-        actions: [IconButton(icon: Icon(Icons.refresh), onPressed: reloadDisabled ? null : reload, )],
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () => reloadDisabled ? null : reload(context),
+          )
+        ],
       ),
       body: Builder(
         builder: (BuildContext buildContext) {
