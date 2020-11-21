@@ -144,7 +144,7 @@ class MyHomePageState extends State<MyHomePage> {
             new Expanded(
               child: new TextField(
                 autofocus: true,
-                decoration: new InputDecoration(labelText: 'Namn'),
+                decoration: new InputDecoration(labelText: 'Ange kod'),
                 controller: _c,
               ),
             )
