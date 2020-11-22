@@ -6,7 +6,7 @@ import 'database_helpers.dart';
 
 abstract class PoopPageState extends State<StatefulWidget> {
   DatabaseHelper _helper = DatabaseHelper.instance;
-  Remote _remote;
+  RemoteStorage _remote = RemoteStorage();
   bool hasRemote = false;
 
   bool synced = false;
@@ -15,19 +15,6 @@ abstract class PoopPageState extends State<StatefulWidget> {
 
   PoopPageState() {
     refresh();
-  }
-
-  Future<Remote> _getRemote() async {
-    if (_remote == null) {
-      String personCode = await _helper.getPersonalCode();
-      if (personCode == null) {
-        _remote = Remote();
-      } else {
-        hasRemote = true;
-        _remote = RemoteStorage(personCode);
-      }
-    }
-    return _remote;
   }
 
   void setHelper(DatabaseHelper helper) {
@@ -41,13 +28,15 @@ abstract class PoopPageState extends State<StatefulWidget> {
   }
 
   void addPoop(Poop poop) async {
-    await (await _getRemote()).addPoop(poop);
+    String prefix = await _helper.getPersonalCode();
+    await _remote.addPoop(poop, prefix);
     await _helper.insertPoop(poop);
     refresh();
   }
 
   void deletePoop(Poop poop) async {
-    (await _getRemote()).deletePoop(poop);
+    String prefix = await _helper.getPersonalCode();
+    await _remote.deletePoop(poop, prefix);
     await _helper.delete(poop);
     refresh();
   }
@@ -61,9 +50,9 @@ abstract class PoopPageState extends State<StatefulWidget> {
   }
 
   Future<void> syncRemote() async {
-    var remote = await _getRemote();
-    if (hasRemote) {
-      List<Poop> poops = await remote.getAllPoops();
+    String prefix = await _helper.getPersonalCode();
+    if (prefix.isNotEmpty) {
+      List<Poop> poops = await _remote.getAllPoops(prefix);
       _helper.clear();
       poops.forEach((poop) => _helper.insertPoop(poop));
     }
