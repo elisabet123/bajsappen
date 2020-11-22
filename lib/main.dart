@@ -1,4 +1,5 @@
 import 'package:bajsappen/calendar/calendarpage.dart';
+import 'package:bajsappen/sync_dialog.dart';
 import 'package:bajsappen/visualize/allpooppage.dart';
 import 'package:bajsappen/statistics/statisticspage.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,7 @@ class MyHomePage extends StatefulWidget {
 class MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   Widget activeTab;
-  String name;
+  String personalCode;
 
   @override
   void initState() {
@@ -52,12 +53,10 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   refresh() async {
+    String personalCode = await DatabaseHelper.instance.getPersonalCode();
     setState(() {
+      this.personalCode = personalCode;
       activeTab = getCurrentTab();
-    });
-    String name = await DatabaseHelper.instance.getName();
-    setState(() {
-      this.name = name;
     });
   }
 
@@ -95,7 +94,10 @@ class MyHomePageState extends State<MyHomePage> {
         title: Text(PoopLocalizations.of(context).title),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.settings), onPressed: () { _showInputDialog(context); }),
+              icon: Icon(Icons.settings),
+              onPressed: () {
+                _showInputDialog(context);
+              }),
           IconButton(icon: Icon(Icons.list), onPressed: _showList),
         ],
       ),
@@ -123,46 +125,14 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   _showInputDialog(BuildContext context) async {
-    String name = await _inputNameDialog(context);
-    if (name != null) {
-      DatabaseHelper.instance.setName(name);
-    }
-    setState(() {
-      this.name = name;
-    });
-  }
-
-  Future<String> _inputNameDialog(BuildContext context) {
-    TextEditingController _c = new TextEditingController(text: name);
-
-    return showDialog(
+    String personalCode = await showDialog(
       context: context,
-      child: new AlertDialog(
-        contentPadding: const EdgeInsets.all(16.0),
-        content: new Row(
-          children: <Widget>[
-            new Expanded(
-              child: new TextField(
-                autofocus: true,
-                decoration: new InputDecoration(labelText: 'Ange kod'),
-                controller: _c,
-              ),
-            )
-          ],
-        ),
-        actions: <Widget>[
-          new FlatButton(
-              child: const Text('AVBRYT'),
-              onPressed: () {
-                Navigator.of(context).pop(null);
-              }),
-          new FlatButton(
-              child: const Text('SPARA'),
-              onPressed: () {
-                Navigator.of(context).pop(_c.text);
-              })
-        ],
-      ),
+      child: new SyncDialog(this.personalCode),
     );
+    if (personalCode != null) {
+      // BUG: this doesn't cause the page to refresh
+      await DatabaseHelper.instance.setPersonalCode(personalCode);
+      this.refresh();
+    }
   }
 }

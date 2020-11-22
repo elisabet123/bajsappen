@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:bajsappen/poop.dart';
 import 'package:path/path.dart';
@@ -109,19 +110,29 @@ class DatabaseHelper {
     db.delete(tableName);
   }
 
-  Future<String> getName() async {
+  Future<String> getPersonalCode() async {
     Database db = await database;
     List<Map> maps = await db.query(personTable);
     if (maps.length > 0) {
       return maps[0][personId];
     } else {
-      return null;
+      var newCode = getRandString(5);
+      await setPersonalCode(newCode);
+      return newCode;
     }
   }
 
-  setName(String name) async {
+  setPersonalCode(String code) async {
     Database db = await database;
     await db.delete(personTable);
-    await db.insert(personTable, {personId: name});
+    if (code.isNotEmpty) {
+      await db.insert(personTable, {personId: code});
+    }
+  }
+
+  String getRandString(int len) {
+    var r = Random.secure();
+    const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890_-';
+    return List.generate(len, (index) => _chars[r.nextInt(_chars.length)]).join();
   }
 }

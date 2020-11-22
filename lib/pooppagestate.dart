@@ -19,12 +19,12 @@ abstract class PoopPageState extends State<StatefulWidget> {
 
   Future<Remote> _getRemote() async {
     if (_remote == null) {
-      String name = await _helper.getName();
-      if (name == null) {
+      String personCode = await _helper.getPersonalCode();
+      if (personCode == null) {
         _remote = Remote();
       } else {
         hasRemote = true;
-        _remote = RemoteStorage(name);
+        _remote = RemoteStorage(personCode);
       }
     }
     return _remote;
