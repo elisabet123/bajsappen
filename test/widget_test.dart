@@ -31,7 +31,7 @@ class FakeDatabase extends Mock implements DatabaseHelper {
 
   @override
   Future<String> getPersonalCode() {
-    return null;
+    return Future.value('');
   }
 }
 

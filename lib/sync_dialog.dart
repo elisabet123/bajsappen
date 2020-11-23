@@ -1,4 +1,39 @@
+import 'package:bajsappen/pooppagestate.dart';
 import 'package:flutter/material.dart';
+
+class Syncer extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => SyncState();
+}
+
+class SyncState extends PoopPageState {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        icon: Icon(Icons.settings),
+        onPressed: () {
+          _showInputDialog(context);
+        });
+
+  }
+
+  @override
+  void refresh() {
+    // TODO: implement refresh
+  }
+
+  _showInputDialog(BuildContext context) async {
+    String currentCode = await this.getPersonalCode();
+    String personalCode = await showDialog(
+      context: context,
+      child: new SyncDialog(currentCode),
+    );
+    if (personalCode != null) {
+      this.setPersonalCode(personalCode);
+      this.refresh();
+    }
+  }
+}
 
 class SyncDialog extends StatelessWidget {
   final String personalCode;

@@ -5,7 +5,6 @@ import 'package:bajsappen/statistics/statisticspage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'database_helpers.dart';
 import 'ididitpage.dart';
 import 'pooplocalization.dart';
 
@@ -53,9 +52,7 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   refresh() async {
-    String personalCode = await DatabaseHelper.instance.getPersonalCode();
     setState(() {
-      this.personalCode = personalCode;
       activeTab = getCurrentTab();
     });
   }
@@ -93,11 +90,7 @@ class MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(PoopLocalizations.of(context).title),
         actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                _showInputDialog(context);
-              }),
+          Syncer(),
           IconButton(icon: Icon(Icons.list), onPressed: _showList),
         ],
       ),
@@ -122,17 +115,5 @@ class MyHomePageState extends State<MyHomePage> {
         onTap: _onNavItemTapped,
       ),
     );
-  }
-
-  _showInputDialog(BuildContext context) async {
-    String personalCode = await showDialog(
-      context: context,
-      child: new SyncDialog(this.personalCode),
-    );
-    if (personalCode != null) {
-      // BUG: this doesn't cause the page to refresh
-      await DatabaseHelper.instance.setPersonalCode(personalCode);
-      this.refresh();
-    }
   }
 }

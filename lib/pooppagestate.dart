@@ -58,5 +58,13 @@ abstract class PoopPageState extends State<StatefulWidget> {
     }
   }
 
+  setPersonalCode(String code) async {
+    await _helper.setPersonalCode(code);
+  }
+
+  Future<String> getPersonalCode() async {
+    return _helper.getPersonalCode();
+  }
+
   void refresh();
 }
